@@ -1,11 +1,14 @@
 package com.example.demo.service;
 
 import com.example.demo.dto.LoginDTO;
+import com.example.demo.dto.RegisterDTO;
+import com.example.demo.entity.Ruolo;
 import com.example.demo.entity.User;
 import com.example.demo.repo.UserRepository;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class UserService {
@@ -18,7 +21,7 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public String login(LoginDTO loginDTO) {
+    public String loginUser(LoginDTO loginDTO) {
 
         User user = userRepository.findByUsername(loginDTO.getUsername()).orElseThrow(() -> new RuntimeException("utente non trovato"));
 
@@ -26,19 +29,26 @@ public class UserService {
             throw new RuntimeException("credenziali non valide");
         }
 
-        return JwtUtil.generateToken(user.getUsername());
+        return JwtUtil.generateToken(user.getUsername(), user.getRuolo().name());
     }
 
-    public String registerUser(LoginDTO loginDTO) {
-        if(loginDTO.getUsername() == null || loginDTO.getPassword() == null) {
+    public String registerUser(RegisterDTO registerDTO){
+        if(registerDTO.getUsername() == null || registerDTO.getPassword() == null) {
             throw new RuntimeException("credenziali non valide");
         }
-        if(userRepository.findByUsername(loginDTO.getUsername()).isPresent()) {
+        if(userRepository.findByUsername(registerDTO.getUsername()).isPresent()) {
             throw new RuntimeException("username non disponibile");
         }
 
         User user = new User();
-        user.setUsername(loginDTO.getUsername());
-        user.setPassword(passwordEncoder.encode(loginDTO.getPassword()));
+        user.setUsername(registerDTO.getUsername());
+        user.setPassword(passwordEncoder.encode(registerDTO.getPassword()));
+        user.setRuolo(Ruolo.DIPENDENTE);
+        userRepository.save(user);
+        return JwtUtil.generateToken(user.getUsername(), user.getRuolo().name());
+    }
+
+    public List<User> visualizzaUser() {
+        return userRepository.findAll();
     }
 }

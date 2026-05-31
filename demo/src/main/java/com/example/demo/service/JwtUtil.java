@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.entity.Ruolo;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -17,8 +18,9 @@ public class JwtUtil {
 
     //Genera token e ne specifica la data di creazione e di scadenza. Inoltre lo firma
     //la chiave segreta
-    public static String generateToken(String username){
-        return Jwts.builder().setSubject(username)
+    public static String generateToken(String username, String ruolo) {
+        return Jwts.builder()
+                .setSubject(username).claim("role", ruolo)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + 86400000))
                 .signWith(key, SignatureAlgorithm.HS256)
@@ -43,4 +45,13 @@ public class JwtUtil {
             return false;
         }
     }
+
+//    public static String extractRole(String token) {
+//        return Jwts.parserBuilder()
+//                .setSigningKey(key)
+//                .build()
+//                .parseClaimsJws(token)
+//                .getBody()
+//                .get("role", String.class);
+//    }
 }

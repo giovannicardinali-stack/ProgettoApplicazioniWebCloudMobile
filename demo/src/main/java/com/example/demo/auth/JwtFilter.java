@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.example.demo.auth;
 
 import com.example.demo.entity.User;
 import com.example.demo.repo.UserRepository;
@@ -31,41 +31,45 @@ public class JwtFilter extends OncePerRequestFilter {
             HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException{
 
+        String path = request.getRequestURI();
+        if (path.startsWith("/auth/")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         String authHeader = request.getHeader("Authorization");
 
         String token = null;
         String username = null;
 
+        //controlla gli header
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             token = authHeader.substring(7);
-
-            try {
-                if (JwtUtil.validateToken(token)) {
-                    username = JwtUtil.extractUsername(token);
-                }
-            } catch (Exception e) {
-                username = null;
-            }
+            username = JwtUtil.extractUsername(token);
         }
 
-        if(username != null && SecurityContextHolder.getContext().getAuthentication() == null){
+        if(username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+            if(!JwtUtil.validateToken(token)) {
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                return;
+            }
 
             User user = userRepository.findByUsername(username).orElse(null);
 
-            if(user != null){
+            if(user != null) {
                 UserDetails userDetails = new org.springframework.security.core.userdetails.User(
                         user.getUsername(),
                         user.getPassword(),
-                        user.getRuolo() != null
-                                ? java.util.List.of(
-                                new org.springframework.security.core.authority.SimpleGrantedAuthority(
-                                        user.getRuolo().name()
-                                )
+                        java.util.List.of(new org.springframework.security.core.authority.SimpleGrantedAuthority(
+                                "ROLE_" + user.getRuolo().name())
                         )
-                                : java.util.Collections.emptyList());
-                UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(userDetails,
-                        null,
-                        userDetails.getAuthorities());
+                );
+
+                UsernamePasswordAuthenticationToken auth =  new UsernamePasswordAuthenticationToken(userDetails
+                        , null
+                        , userDetails.getAuthorities()
+                );
+
                 auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
                 SecurityContextHolder.getContext().setAuthentication(auth);
