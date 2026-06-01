@@ -25,13 +25,13 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        // 🔓 PUBLIC ENDPOINTS
+                        //PUBLIC ENDPOINTS
                         .requestMatchers("/auth/register", "/auth/login").permitAll()
 
-                        // 🔐 ADMIN ONLY
+                        //ADMIN ONLY
                         .requestMatchers("/admin/**").hasRole("ADMIN")
 
-                        // 🔒 ALL OTHER REQUESTS
+                        //ALL OTHER REQUESTS
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
