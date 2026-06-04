@@ -19,6 +19,7 @@ public class Progetto {
     @ManyToOne
     private User admin;
     private List<User> dipendente;
-
+    private List<Task> taskInCorso;
+    private List<Task> taskTerminate;
 
 }

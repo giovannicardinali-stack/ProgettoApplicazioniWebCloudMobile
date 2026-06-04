@@ -1,4 +1,29 @@
 package com.example.demo.entity;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import lombok.Getter;
+import lombok.Setter;
+
+import java.time.LocalDate;
+import java.util.UUID;
+
+@Getter
+@Setter
+@Entity
 public class Task {
+
+    @Id
+    private UUID id;
+    @ManyToOne
+    private User admin;
+    private String obiettivo;
+    @ManyToOne
+    private Progetto progetto;
+    private LocalDate dataInizio = LocalDate.now();
+    private LocalDate dataFine;
+    private boolean validato;
+    private StatoTask statoTask;
+
 }
