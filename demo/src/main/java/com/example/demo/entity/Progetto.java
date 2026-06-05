@@ -18,6 +18,7 @@ public class Progetto {
     private UUID id = UUID.randomUUID();
     @ManyToOne
     private User admin;
+    private String nome;
     private List<User> dipendente;
     private List<Task> taskInCorso;
     private List<Task> taskTerminate;
