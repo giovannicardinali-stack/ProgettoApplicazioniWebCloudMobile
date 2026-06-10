@@ -20,8 +20,8 @@ public class ProgettoService {
         progettoRepository.save(progetto);
     }
 
-    public void eliminaProgetto(UUID id){
-        progettoRepository.deleteProgettoById(id);
+    public void eliminaProgetto(UUID idProgetto){
+        progettoRepository.deleteProgettoById(idProgetto);
     }
 
 
