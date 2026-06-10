@@ -21,9 +21,9 @@ public class Task {
     private String obiettivo;
     @ManyToOne
     private Progetto progetto;
-    private LocalDate dataInizio = LocalDate.now();
+    private LocalDate dataInizio;
     private LocalDate dataFine;
-    private boolean validato;
-    private StatoTask statoTask;
+    private boolean validato = false;
+    private StatoTask statoTask = StatoTask.NONINIZIATO;
 
 }

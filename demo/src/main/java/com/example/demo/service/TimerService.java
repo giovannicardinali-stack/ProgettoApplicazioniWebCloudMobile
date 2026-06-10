@@ -13,7 +13,7 @@ import java.util.UUID;
 @Service
 public class TimerService {
     private final UserRepository userRepository;
-    TimerRepository timerRepository;
+    private final TimerRepository timerRepository;
 
     public TimerService(TimerRepository timerRepository, UserRepository userRepository) {
         this.timerRepository = timerRepository;
