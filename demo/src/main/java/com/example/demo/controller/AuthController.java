@@ -19,7 +19,6 @@ public class AuthController {
 
     private final UserService userService;
 
-
     @PostMapping("/login")
     public ResponseEntity<?> loginUser(@RequestBody LoginDTO loginDTO) {
         String token = userService.loginUser(loginDTO);
@@ -31,4 +30,12 @@ public class AuthController {
     public ResponseEntity<?> registerUser(@RequestBody RegisterDTO registerDTO){
         return ResponseEntity.ok(userService.registerUser(registerDTO));
     }
+
+    @PostMapping("/testcreazione")
+    public ResponseEntity<?> creaAdmin(){
+
+        //return ResponseEntity.ok(userService.creaAdmin());
+        return ResponseEntity.ok(userService.creaAdmin());
+    }
+
 }

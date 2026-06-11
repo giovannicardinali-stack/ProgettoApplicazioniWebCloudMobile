@@ -8,7 +8,6 @@ import com.example.demo.repo.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 
 @Service
 public class UserService {
@@ -48,7 +47,11 @@ public class UserService {
         return JwtUtil.generateToken(user.getUsername(), user.getRuolo().name());
     }
 
-    public List<User> visualizzaUser() {
-        return userRepository.findAll();
+    public User creaAdmin(){
+        User admin = new User();
+        admin.setUsername("admin");
+        admin.setPassword(passwordEncoder.encode("admin"));
+        admin.setRuolo(Ruolo.ADMIN);
+        return userRepository.save(admin);
     }
 }

@@ -18,8 +18,4 @@ public class AdminController {
         this.userService = userService;
     }
 
-    @GetMapping("/users")
-    public List<User> visualizzaUser(){
-        return userService.visualizzaUser();
-    }
 }

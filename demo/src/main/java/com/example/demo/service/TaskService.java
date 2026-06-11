@@ -6,12 +6,10 @@ import com.example.demo.entity.User;
 import com.example.demo.repo.ProgettoRepository;
 import com.example.demo.repo.TaskRepository;
 import com.example.demo.repo.UserRepository;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.nio.file.AccessDeniedException;
 import java.time.LocalDate;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service

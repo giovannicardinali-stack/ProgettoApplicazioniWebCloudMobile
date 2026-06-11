@@ -1,6 +1,5 @@
 package com.example.demo.service;
 
-import com.example.demo.entity.Ruolo;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -45,13 +44,4 @@ public class JwtUtil {
             return false;
         }
     }
-
-//    public static String extractRole(String token) {
-//        return Jwts.parserBuilder()
-//                .setSigningKey(key)
-//                .build()
-//                .parseClaimsJws(token)
-//                .getBody()
-//                .get("role", String.class);
-//    }
 }
