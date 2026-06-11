@@ -15,7 +15,7 @@ public class ProgettoService {
         this.progettoRepository = progettoRepository;
     }
 
-    public void creaProgetto(){
+    public String creaProgetto(){
         Progetto progetto = new Progetto();
         progettoRepository.save(progetto);
     }

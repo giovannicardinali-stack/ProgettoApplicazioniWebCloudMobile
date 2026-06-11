@@ -1,6 +1,8 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.CreaProgettoDTO;
 import com.example.demo.service.ProgettoService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,8 +20,8 @@ public class ProgettoController {
     }
 
     @PostMapping("/crea")
-    public void creaProgetto(){
-        this.progettoService.creaProgetto();
+    public ResponseEntity<?> creaProgetto(CreaProgettoDTO creaProgettoDTO){
+        return ResponseEntity.ok(progettoService.creaProgetto());
     }
 
     @PostMapping("/elimina")

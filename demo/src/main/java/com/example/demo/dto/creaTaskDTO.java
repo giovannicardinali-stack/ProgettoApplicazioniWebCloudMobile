@@ -7,7 +7,7 @@ import java.time.LocalDate;
 
 @Getter
 @Setter
-public class creaTaskDTO {
+public class CreaTaskDTO {
     private String obiettivo;
     private LocalDate dataInizio;
     private LocalDate dataFine;

@@ -1,6 +1,6 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.creaTaskDTO;
+import com.example.demo.dto.CreaTaskDTO;
 import com.example.demo.service.TaskService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -19,7 +19,7 @@ public class TaskController {
 
     @PostMapping("/{idProgetto}/tasks")
     public ResponseEntity<UUID> createTask(@PathVariable UUID idProgetto,
-                                           @RequestBody creaTaskDTO creataskDTO,
+                                           @RequestBody CreaTaskDTO creataskDTO,
                                            Authentication authentication) throws Exception {
 
         String username = authentication.getName();
