@@ -3,6 +3,8 @@ package com.example.demo.controller;
 import com.example.demo.dto.CreaProgettoDTO;
 import com.example.demo.service.ProgettoService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,8 +22,9 @@ public class ProgettoController {
     }
 
     @PostMapping("/crea")
-    public ResponseEntity<?> creaProgetto(CreaProgettoDTO creaProgettoDTO){
-        return ResponseEntity.ok(progettoService.creaProgetto());
+    public ResponseEntity<?> creaProgetto(@RequestBody CreaProgettoDTO creaProgettoDTO,
+                                          @AuthenticationPrincipal UserDetails admin){
+        return ResponseEntity.ok(progettoService.creaProgetto(creaProgettoDTO, admin.getUsername()));
     }
 
     @PostMapping("/elimina")

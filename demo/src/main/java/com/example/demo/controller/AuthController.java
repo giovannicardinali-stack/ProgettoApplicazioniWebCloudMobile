@@ -34,7 +34,6 @@ public class AuthController {
     @PostMapping("/testcreazione")
     public ResponseEntity<?> creaAdmin(){
 
-        //return ResponseEntity.ok(userService.creaAdmin());
         return ResponseEntity.ok(userService.creaAdmin());
     }
 
