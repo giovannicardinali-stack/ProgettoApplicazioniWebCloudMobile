@@ -3,7 +3,8 @@ package com.example.demo.controller;
 import com.example.demo.dto.CreaTaskDTO;
 import com.example.demo.service.TaskService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -17,18 +18,11 @@ public class TaskController {
         this.taskService = taskService;
     }
 
-    @PostMapping("/{idProgetto}/tasks")
-    public ResponseEntity<UUID> createTask(@PathVariable UUID idProgetto,
-                                           @RequestBody CreaTaskDTO creataskDTO,
-                                           Authentication authentication) throws Exception {
+    @PostMapping("/aggiungiTask")
+    public ResponseEntity<UUID> createTask(@PathVariable UUID idProgetto, @RequestBody CreaTaskDTO creataskDTO,
+                                           @AuthenticationPrincipal UserDetails admin) throws Exception {
 
-        String username = authentication.getName();
-
-        UUID taskID = taskService.creaTask(username,
-                idProgetto,
-                creataskDTO.getObiettivo(),
-                creataskDTO.getDataInizio(),
-                creataskDTO.getDataFine());
+        UUID taskID = taskService.creaTask(admin.getUsername(), idProgetto, creataskDTO);
 
         return ResponseEntity.ok(taskID);
     }

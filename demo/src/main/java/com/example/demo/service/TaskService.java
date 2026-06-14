@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.dto.CreaTaskDTO;
 import com.example.demo.entity.Progetto;
 import com.example.demo.entity.Task;
 import com.example.demo.entity.User;
@@ -24,7 +25,7 @@ public class TaskService {
         this.progettoRepository = progettoRepository;
     }
 
-    public UUID creaTask(String username, UUID idProgetto, String obiettivo, LocalDate dataInizio, LocalDate dataFine) throws AccessDeniedException {
+    public UUID creaTask(String username, UUID idProgetto, CreaTaskDTO creaTaskDTO) throws AccessDeniedException {
 
         User admin = userRepository.findByUsername(username).orElseThrow();
 
