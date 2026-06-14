@@ -35,11 +35,11 @@ public class TaskService {
             throw new AccessDeniedException("solo l'admin di questo progetto può creare task");
         }
         Task task = new Task();
-        task.setAdmin(admin);
-        task.setObiettivo(obiettivo);
-        task.setProgetto(progetto);
-        task.setDataInizio(dataInizio);
-        task.setDataFine(dataFine);
+//        task.setAdmin(admin);
+//        task.setObiettivo(obiettivo);
+//        task.setProgetto(progetto);
+//        task.setDataInizio(dataInizio);
+//        task.setDataFine(dataFine);
 
         taskRepository.save(task);
         return task.getId();

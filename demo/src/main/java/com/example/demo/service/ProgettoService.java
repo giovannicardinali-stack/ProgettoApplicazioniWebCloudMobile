@@ -3,15 +3,12 @@ package com.example.demo.service;
 import com.example.demo.dto.CreaProgettoDTO;
 import com.example.demo.dto.EliminaProgettoDTO;
 import com.example.demo.entity.Progetto;
-import com.example.demo.entity.Task;
 import com.example.demo.entity.User;
 import com.example.demo.repo.ProgettoRepository;
 import com.example.demo.repo.TaskRepository;
 import com.example.demo.repo.UserRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.UUID;
 
 @Service
 public class ProgettoService {
@@ -44,9 +41,7 @@ public class ProgettoService {
 
     public void eliminaProgetto(EliminaProgettoDTO dto, String usernameAdmin){
 
-        UUID idProgetto = dto.getIdProgetto();
-
-        Progetto progetto = progettoRepository.findById(idProgetto).orElse(null);
+        Progetto progetto = progettoRepository.findProgettoByNome(dto.getNome()).orElse(null);
 
         if(progetto == null){
             throw new IllegalArgumentException("progetto non trovato");
@@ -55,12 +50,8 @@ public class ProgettoService {
             throw new IllegalArgumentException("non sei l'admin di questo progetto");
         }
 
-        List<Task> tasks = progetto.getTaskInCorso();
-        tasks.addAll(progetto.getTaskTerminate());
-        for(Task task : tasks){
-            taskRepository.deleteById(task.getId());
-        }
+        taskRepository.deleteTaskByProgetto(progetto);
 
-        progettoRepository.deleteProgettoById(idProgetto);
+        progettoRepository.delete(progetto);
     }
 }

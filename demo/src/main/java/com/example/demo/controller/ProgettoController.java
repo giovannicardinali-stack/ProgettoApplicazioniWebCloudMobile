@@ -11,10 +11,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.UUID;
-
 @RestController
-@RequestMapping("/progetto")
+@RequestMapping("/admin/progetto")
 public class ProgettoController {
     ProgettoService progettoService;
 
@@ -29,7 +27,9 @@ public class ProgettoController {
     }
 
     @PostMapping("/elimina")
-    public ResponseEntity<?> eliminaProgetto(@RequestBody EliminaProgettoDTO dto, @AuthenticationPrincipal UserDetails admin){
+    public ResponseEntity<?> eliminaProgetto(@RequestBody EliminaProgettoDTO dto,
+                                             @AuthenticationPrincipal UserDetails admin){
+
         this.progettoService.eliminaProgetto(dto, admin.getUsername());
         return ResponseEntity.ok("Progetto eliminato con successo");
     }
