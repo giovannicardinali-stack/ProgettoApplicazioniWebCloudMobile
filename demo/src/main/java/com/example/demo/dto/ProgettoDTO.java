@@ -5,6 +5,6 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class CreaProgettoDTO {
+public class ProgettoDTO {
     private String nome;
 }

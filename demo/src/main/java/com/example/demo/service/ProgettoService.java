@@ -1,7 +1,6 @@
 package com.example.demo.service;
 
-import com.example.demo.dto.CreaProgettoDTO;
-import com.example.demo.dto.EliminaProgettoDTO;
+import com.example.demo.dto.ProgettoDTO;
 import com.example.demo.entity.Progetto;
 import com.example.demo.entity.User;
 import com.example.demo.repo.ProgettoRepository;
@@ -23,23 +22,23 @@ public class ProgettoService {
         this.taskRepository = taskRepository;
     }
 
-    public Progetto creaProgetto(CreaProgettoDTO creaProgettoDTO, String usernameAdmin){
-        if(creaProgettoDTO.getNome() == null){
+    public Progetto creaProgetto(ProgettoDTO progettoDTO, String usernameAdmin){
+        if(progettoDTO.getNome() == null){
             throw new IllegalArgumentException("inserire un nome valido");
         }
-        if(progettoRepository.existsProgettoByNome(creaProgettoDTO.getNome())){
+        if(progettoRepository.existsProgettoByNome(progettoDTO.getNome())){
             throw new IllegalArgumentException("progetto già esistente");
         }
 
         User admin = userRepository.findByUsername(usernameAdmin).orElseThrow(() -> new RuntimeException("Amministratore non trovato"));
 
         Progetto progetto = new Progetto();
-        progetto.setNome(creaProgettoDTO.getNome());
+        progetto.setNome(progettoDTO.getNome());
         progetto.setAdmin(admin);
         return progettoRepository.save(progetto);
     }
 
-    public void eliminaProgetto(EliminaProgettoDTO dto, String usernameAdmin){
+    public void eliminaProgetto(ProgettoDTO dto, String usernameAdmin){
 
         Progetto progetto = progettoRepository.findProgettoByNome(dto.getNome()).orElse(null);
 

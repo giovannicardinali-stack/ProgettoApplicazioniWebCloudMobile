@@ -1,7 +1,6 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.CreaProgettoDTO;
-import com.example.demo.dto.EliminaProgettoDTO;
+import com.example.demo.dto.ProgettoDTO;
 import com.example.demo.service.ProgettoService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -21,13 +20,13 @@ public class ProgettoController {
     }
 
     @PostMapping("/crea")
-    public ResponseEntity<?> creaProgetto(@RequestBody CreaProgettoDTO creaProgettoDTO,
+    public ResponseEntity<?> creaProgetto(@RequestBody ProgettoDTO progettoDTO,
                                           @AuthenticationPrincipal UserDetails admin){
-        return ResponseEntity.ok(progettoService.creaProgetto(creaProgettoDTO, admin.getUsername()));
+        return ResponseEntity.ok(progettoService.creaProgetto(progettoDTO, admin.getUsername()));
     }
 
     @PostMapping("/elimina")
-    public ResponseEntity<?> eliminaProgetto(@RequestBody EliminaProgettoDTO dto,
+    public ResponseEntity<?> eliminaProgetto(@RequestBody ProgettoDTO dto,
                                              @AuthenticationPrincipal UserDetails admin){
 
         this.progettoService.eliminaProgetto(dto, admin.getUsername());
