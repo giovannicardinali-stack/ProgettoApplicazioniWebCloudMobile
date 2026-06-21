@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.IscriviDipendenteDTO;
 import com.example.demo.dto.ProgettoDTO;
 import com.example.demo.service.ProgettoService;
 import org.springframework.http.ResponseEntity;
@@ -32,4 +33,11 @@ public class ProgettoController {
         this.progettoService.eliminaProgetto(dto, admin.getUsername());
         return ResponseEntity.ok("Progetto eliminato con successo");
     }
+
+    @PostMapping("/iscrivi")
+    public ResponseEntity<?> iscriviDipendente(@RequestBody IscriviDipendenteDTO dto,
+                                               @AuthenticationPrincipal UserDetails admin){
+        return ResponseEntity.ok(progettoService.iscriviDipendente(dto, admin.getUsername()));
+    }
+
 }

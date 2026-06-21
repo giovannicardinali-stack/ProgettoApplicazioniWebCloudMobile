@@ -15,7 +15,7 @@ import java.util.UUID;
 public class Task {
 
     @Id
-    private UUID id;
+    private UUID id = UUID.randomUUID();
     @ManyToOne
     private User admin;
     private String obiettivo;

@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.dto.IscriviDipendenteDTO;
 import com.example.demo.dto.ProgettoDTO;
 import com.example.demo.entity.Progetto;
 import com.example.demo.entity.User;
@@ -7,6 +8,8 @@ import com.example.demo.repo.ProgettoRepository;
 import com.example.demo.repo.TaskRepository;
 import com.example.demo.repo.UserRepository;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 
 @Service
@@ -52,5 +55,18 @@ public class ProgettoService {
         taskRepository.deleteTaskByProgetto(progetto);
 
         progettoRepository.delete(progetto);
+    }
+
+    public Progetto iscriviDipendente(IscriviDipendenteDTO dto, String usernameAdmin){
+
+
+        User dipendente = userRepository.findByUsername(dto.getUsernameDipendente()).orElseThrow(() -> new RuntimeException("non trovato"));
+        Progetto progetto = progettoRepository.findProgettoByNome(dto.getNomeProgetto()).orElseThrow(() -> new RuntimeException("non trovato"));
+        if(!progetto.getAdmin().getUsername().equals(usernameAdmin)){
+            throw new IllegalArgumentException("non sei l'admin di questo progetto");
+        }
+
+        progetto.aggiungiDipendente(dipendente);
+        return progettoRepository.save(progetto);
     }
 }

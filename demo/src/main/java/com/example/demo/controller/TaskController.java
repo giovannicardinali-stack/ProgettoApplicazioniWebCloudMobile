@@ -19,11 +19,9 @@ public class TaskController {
     }
 
     @PostMapping("/aggiungiTask")
-    public ResponseEntity<UUID> creaTask(@PathVariable UUID idProgetto, @RequestBody CreaTaskDTO creataskDTO,
+    public ResponseEntity<UUID> creaTask(@RequestBody CreaTaskDTO creataskDTO,
                                            @AuthenticationPrincipal UserDetails admin) throws Exception {
 
-        UUID taskID = taskService.creaTask(admin.getUsername(), idProgetto, creataskDTO);
-
-        return ResponseEntity.ok(taskID);
+        return ResponseEntity.ok(taskService.creaTask(admin.getUsername(), creataskDTO));
     }
 }

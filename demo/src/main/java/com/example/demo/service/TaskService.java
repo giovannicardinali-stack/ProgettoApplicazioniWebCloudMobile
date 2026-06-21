@@ -10,7 +10,6 @@ import com.example.demo.repo.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.nio.file.AccessDeniedException;
-import java.time.LocalDate;
 import java.util.UUID;
 
 @Service
@@ -25,21 +24,21 @@ public class TaskService {
         this.progettoRepository = progettoRepository;
     }
 
-    public UUID creaTask(String username, UUID idProgetto, CreaTaskDTO creaTaskDTO) throws AccessDeniedException {
+    public UUID creaTask(String usernameAdmin, CreaTaskDTO creaTaskDTO) throws AccessDeniedException {
 
-        User admin = userRepository.findByUsername(username).orElseThrow();
+        User admin = userRepository.findByUsername(usernameAdmin).orElseThrow();
 
-        Progetto progetto = progettoRepository.findById(idProgetto).orElseThrow();
+        Progetto progetto = progettoRepository.findProgettoByNome(creaTaskDTO.getNomeProgetto()).orElseThrow();
 
         if(!progetto.getAdmin().getId().equals(admin.getId())) {
             throw new AccessDeniedException("solo l'admin di questo progetto può creare task");
         }
         Task task = new Task();
-//        task.setAdmin(admin);
-//        task.setObiettivo(obiettivo);
-//        task.setProgetto(progetto);
-//        task.setDataInizio(dataInizio);
-//        task.setDataFine(dataFine);
+        task.setAdmin(admin);
+        task.setObiettivo(creaTaskDTO.getObiettivo());
+        task.setProgetto(progetto);
+        task.setDataInizio(creaTaskDTO.getDataInizio());
+        task.setDataFine(creaTaskDTO.getDataFine());
 
         taskRepository.save(task);
         return task.getId();

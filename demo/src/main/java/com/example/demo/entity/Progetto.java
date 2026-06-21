@@ -21,10 +21,14 @@ public class Progetto {
     private User admin;
     private String nome;
     @OneToMany
-    private List<User> dipendente;
+    private List<User> dipendenti;
     @OneToMany
     private List<Task> taskInCorso;
     @OneToMany
     private List<Task> taskTerminate;
 
+
+    public void aggiungiDipendente(User dipendente){
+        dipendenti.add(dipendente);
+    }
 }
