@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.dto.DettagliProgettoDTO;
 import com.example.demo.dto.IscriviDipendenteDTO;
 import com.example.demo.dto.ProgettoDTO;
 import com.example.demo.entity.Progetto;
@@ -59,7 +60,6 @@ public class ProgettoService {
 
     public Progetto iscriviDipendente(IscriviDipendenteDTO dto, String usernameAdmin){
 
-
         User dipendente = userRepository.findByUsername(dto.getUsernameDipendente()).orElseThrow(() -> new RuntimeException("non trovato"));
         Progetto progetto = progettoRepository.findProgettoByNome(dto.getNomeProgetto()).orElseThrow(() -> new RuntimeException("non trovato"));
         if(!progetto.getAdmin().getUsername().equals(usernameAdmin)){
@@ -68,5 +68,23 @@ public class ProgettoService {
 
         progetto.aggiungiDipendente(dipendente);
         return progettoRepository.save(progetto);
+    }
+
+    public List<Progetto> visualizzaProgetti(String usernameAdmin){
+        User admin = userRepository.findByUsername(usernameAdmin).orElseThrow(() -> new RuntimeException("non trovato"));
+        return progettoRepository.findProgettoByAdmin(admin);
+    }
+
+    public DettagliProgettoDTO visualizzaDettagli(ProgettoDTO dto,
+                                                  String usernameAdmin){
+        Progetto Progetto = progettoRepository.findProgettoByNome(dto.getNome()).orElse(null);
+        if(Progetto == null){
+            throw new IllegalArgumentException("progetto non trovato");
+        }
+        if(!com.example.demo.entity.Progetto.getAdmin().getUsername().equals(usernameAdmin)){
+            throw new IllegalArgumentException("non sei l'admin di questo progetto");
+        }
+        DettagliProgettoDTO risposta = new  DettagliProgettoDTO();
+
     }
 }

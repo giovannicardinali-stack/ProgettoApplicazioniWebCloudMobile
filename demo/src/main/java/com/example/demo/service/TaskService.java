@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.dto.CreaTaskDTO;
+import com.example.demo.dto.ProgettoDTO;
 import com.example.demo.entity.Progetto;
 import com.example.demo.entity.Task;
 import com.example.demo.entity.User;
@@ -10,6 +11,7 @@ import com.example.demo.repo.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.nio.file.AccessDeniedException;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -42,5 +44,18 @@ public class TaskService {
 
         taskRepository.save(task);
         return task.getId();
+    }
+
+    public List<Task> visualizzaTask(ProgettoDTO dto, String usernameAdmin){
+
+        Progetto p = progettoRepository.findProgettoByNome(dto.getNome()).orElseThrow();
+        if(!p.getAdmin().getUsername().equals(usernameAdmin)) {
+            throw new IllegalArgumentException("impossibile accedere a questo progetto");
+        }
+        List<Task> tasks = taskRepository.findTasksByProgetto(p);
+        if(tasks.isEmpty()){
+            throw new IllegalArgumentException("nessuna task trovata");
+        }
+        return tasks;
     }
 }

@@ -31,6 +31,7 @@ public class SecurityConfig {
                         //ADMIN ONLY
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/task/aggiungiTask").hasRole("ADMIN")
+                        .requestMatchers("/task/visualizza").hasRole("ADMIN")
 
                         //ALL OTHER REQUESTS
                         .anyRequest().authenticated()

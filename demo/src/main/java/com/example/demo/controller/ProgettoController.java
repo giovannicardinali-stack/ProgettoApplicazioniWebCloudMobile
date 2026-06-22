@@ -1,15 +1,13 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.DettagliProgettoDTO;
 import com.example.demo.dto.IscriviDipendenteDTO;
 import com.example.demo.dto.ProgettoDTO;
 import com.example.demo.service.ProgettoService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/admin/progetto")
@@ -40,4 +38,16 @@ public class ProgettoController {
         return ResponseEntity.ok(progettoService.iscriviDipendente(dto, admin.getUsername()));
     }
 
+    //visualizza tutti i progetti dell'admin
+    @GetMapping("/visualizza")
+    public ResponseEntity<?> visualizzaProgetti(@AuthenticationPrincipal UserDetails admin){
+        return ResponseEntity.ok(progettoService.visualizzaProgetti(admin.getUsername()));
+    }
+
+    //visualizza i dettagli di un progetto scelto
+    @GetMapping("/dettagli")
+    public ResponseEntity<DettagliProgettoDTO> visualizzaDettagli(@RequestBody ProgettoDTO dto,
+                                                                  @AuthenticationPrincipal UserDetails admin){
+        return ResponseEntity.ok(progettoService.visualizzaDettagli(dto, admin.getUsername()));
+    }
 }
