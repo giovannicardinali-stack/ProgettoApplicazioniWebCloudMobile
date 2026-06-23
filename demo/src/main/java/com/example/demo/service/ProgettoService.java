@@ -77,14 +77,19 @@ public class ProgettoService {
 
     public DettagliProgettoDTO visualizzaDettagli(ProgettoDTO dto,
                                                   String usernameAdmin){
-        Progetto Progetto = progettoRepository.findProgettoByNome(dto.getNome()).orElse(null);
-        if(Progetto == null){
+        Progetto progetto = progettoRepository.findProgettoByNome(dto.getNome()).orElse(null);
+        if(progetto == null){
             throw new IllegalArgumentException("progetto non trovato");
         }
-        if(!com.example.demo.entity.Progetto.getAdmin().getUsername().equals(usernameAdmin)){
+        if(progetto.getAdmin().getUsername().equals(usernameAdmin)){
             throw new IllegalArgumentException("non sei l'admin di questo progetto");
         }
         DettagliProgettoDTO risposta = new  DettagliProgettoDTO();
-
+        risposta.setIdProgetto(progetto.getId());
+        risposta.setNomeProgetto(progetto.getNome());
+        risposta.setAdmin(progetto.getAdmin());
+        risposta.setTaskInCorso(progetto.getTaskInCorso());
+        risposta.setTaskTerminate(progetto.getTaskTerminate());
+        return risposta;
     }
 }

@@ -33,4 +33,11 @@ public class TaskController {
                                                      @AuthenticationPrincipal UserDetails admin){
         return ResponseEntity.ok(taskService.visualizzaTask(dto, admin.getUsername()));
     }
+
+    @GetMapping("/taskDipendente")
+    public ResponseEntity<List<Task>> visualizzaTaskDipendente(@RequestBody ProgettoDTO dto,
+                                                               @AuthenticationPrincipal UserDetails dipendente){
+        return ResponseEntity.ok(taskService.visualizzaTaskDIpendente(dto, dipendente.getUsername()));
+
+    }
 }
