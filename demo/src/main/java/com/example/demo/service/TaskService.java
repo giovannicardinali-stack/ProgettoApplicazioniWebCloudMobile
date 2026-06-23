@@ -59,7 +59,15 @@ public class TaskService {
         return tasks;
     }
 
-    public List<Task> visualizzaTaskDIpendente(ProgettoDTO dto, String usernameAdmin){
+    public List<Task> visualizzaTaskDIpendente(ProgettoDTO dto, String usernameDipendente){
+
+        Progetto progetto =  progettoRepository.findProgettoByNome(dto.getNome()).orElseThrow();
+        User dipendente = userRepository.findByUsername(usernameDipendente).orElseThrow();
+        List<User> utenti = progetto.getDipendenti();
+        if(!utenti.contains(dipendente)){
+            throw new IllegalArgumentException("impossibile accedere a questo progetto");
+        }
+        
 
     }
 }
