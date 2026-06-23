@@ -52,11 +52,8 @@ public class TaskService {
         if(!p.getAdmin().getUsername().equals(usernameAdmin)) {
             throw new IllegalArgumentException("impossibile accedere a questo progetto");
         }
-        List<Task> tasks = taskRepository.findTasksByProgetto(p);
-        if(tasks.isEmpty()){
-            throw new IllegalArgumentException("nessuna task trovata");
-        }
-        return tasks;
+
+        return taskRepository.findTasksByProgetto(p);
     }
 
     public List<Task> visualizzaTaskDIpendente(ProgettoDTO dto, String usernameDipendente){
