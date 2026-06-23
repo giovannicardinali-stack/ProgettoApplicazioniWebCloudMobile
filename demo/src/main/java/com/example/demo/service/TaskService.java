@@ -63,16 +63,10 @@ public class TaskService {
 
         Progetto progetto =  progettoRepository.findProgettoByNome(dto.getNome()).orElseThrow();
         User dipendente = userRepository.findByUsername(usernameDipendente).orElseThrow();
-        List<User> utenti = progetto.getDipendenti();
-        if(!utenti.contains(dipendente)){
+        if(!progetto.getDipendenti().contains(dipendente)){
             throw new IllegalArgumentException("impossibile accedere a questo progetto");
         }
 
-        List<Task> tasks =  taskRepository.findTasksByProgettoAndDipendente(progetto, dipendente);
-
-        if(tasks.isEmpty()){
-            return tasks;
-        }
-        return tasks;
+        return taskRepository.findTasksByProgettoAndDipendente(progetto, dipendente);
     }
 }
