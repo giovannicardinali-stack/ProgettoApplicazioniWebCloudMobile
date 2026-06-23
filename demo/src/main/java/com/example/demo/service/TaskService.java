@@ -67,7 +67,12 @@ public class TaskService {
         if(!utenti.contains(dipendente)){
             throw new IllegalArgumentException("impossibile accedere a questo progetto");
         }
-        
 
+        List<Task> tasks =  taskRepository.findTasksByProgettoAndDipendente(progetto, dipendente);
+
+        if(tasks.isEmpty()){
+            throw new IllegalArgumentException("nessuna task trovata");
+        }
+        return tasks;
     }
 }
