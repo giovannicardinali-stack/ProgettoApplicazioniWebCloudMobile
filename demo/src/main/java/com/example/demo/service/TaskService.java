@@ -71,7 +71,7 @@ public class TaskService {
         List<Task> tasks =  taskRepository.findTasksByProgettoAndDipendente(progetto, dipendente);
 
         if(tasks.isEmpty()){
-            throw new IllegalArgumentException("nessuna task trovata");
+            return tasks;
         }
         return tasks;
     }
