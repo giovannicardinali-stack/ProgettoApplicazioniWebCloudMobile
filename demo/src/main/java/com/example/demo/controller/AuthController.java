@@ -1,6 +1,5 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.LoginDTO;
 import com.example.demo.dto.RegisterDTO;
 import com.example.demo.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -20,8 +19,8 @@ public class AuthController {
     private final UserService userService;
 
     @PostMapping("/login")
-    public ResponseEntity<?> loginUser(@RequestBody LoginDTO loginDTO) {
-        String token = userService.loginUser(loginDTO);
+    public ResponseEntity<?> loginUser(@RequestBody RegisterDTO dto) {
+        String token = userService.loginUser(dto);
 
         return ResponseEntity.ok(Map.of("token", token));
     }
@@ -36,5 +35,4 @@ public class AuthController {
 
         return ResponseEntity.ok(userService.creaAdmin());
     }
-
 }

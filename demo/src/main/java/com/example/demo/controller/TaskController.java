@@ -40,4 +40,9 @@ public class TaskController {
         return ResponseEntity.ok(taskService.visualizzaTaskDIpendente(dto, dipendente.getUsername()));
 
     }
+
+    @PostMapping("/soluzione")
+    public void SoluzioneTaks(){
+
+    }
 }

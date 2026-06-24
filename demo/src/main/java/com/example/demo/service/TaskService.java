@@ -66,4 +66,5 @@ public class TaskService {
 
         return taskRepository.findTasksByProgettoAndDipendente(progetto, dipendente);
     }
+
 }

@@ -1,6 +1,5 @@
 package com.example.demo.service;
 
-import com.example.demo.dto.LoginDTO;
 import com.example.demo.dto.RegisterDTO;
 import com.example.demo.entity.Ruolo;
 import com.example.demo.entity.User;
@@ -20,11 +19,11 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public String loginUser(LoginDTO loginDTO) {
+    public String loginUser(RegisterDTO dto) {
 
-        User user = userRepository.findByUsername(loginDTO.getUsername()).orElseThrow(() -> new RuntimeException("utente non trovato"));
+        User user = userRepository.findByUsername(dto.getUsername()).orElseThrow(() -> new RuntimeException("utente non trovato"));
 
-        if(!passwordEncoder.matches(loginDTO.getPassword(), user.getPassword())) {
+        if(!passwordEncoder.matches(dto.getPassword(), user.getPassword())) {
             throw new RuntimeException("credenziali non valide");
         }
 
