@@ -3,6 +3,7 @@ package com.example.demo.service;
 import com.example.demo.dto.CreaTaskDTO;
 import com.example.demo.dto.ProgettoDTO;
 import com.example.demo.entity.Progetto;
+import com.example.demo.entity.Ruolo;
 import com.example.demo.entity.Task;
 import com.example.demo.entity.User;
 import com.example.demo.repo.ProgettoRepository;
@@ -30,6 +31,10 @@ public class TaskService {
 
         User admin = userRepository.findByUsername(usernameAdmin).orElseThrow();
 
+        if(!admin.getRuolo().equals(Ruolo.ADMIN)){
+            throw new AccessDeniedException("solo gli admin");
+        }
+
         Progetto progetto = progettoRepository.findProgettoByNome(creaTaskDTO.getNomeProgetto()).orElseThrow();
 
         if(!progetto.getAdmin().getId().equals(admin.getId())) {
@@ -49,6 +54,9 @@ public class TaskService {
     public List<Task> visualizzaTask(ProgettoDTO dto, String usernameAdmin){
 
         Progetto p = progettoRepository.findProgettoByNome(dto.getNome()).orElseThrow();
+
+        System.out.println(usernameAdmin);
+        System.out.println(p.getAdmin().getUsername());
         if(!p.getAdmin().getUsername().equals(usernameAdmin)) {
             throw new IllegalArgumentException("impossibile accedere a questo progetto");
         }
