@@ -13,7 +13,8 @@ import java.util.UUID;
 public class Task {
 
     @Id
-    private UUID id = UUID.randomUUID();
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
     @ManyToOne
     private User admin;
     private String obiettivo;
