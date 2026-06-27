@@ -27,7 +27,7 @@ public class TaskService {
         this.progettoRepository = progettoRepository;
     }
 
-    public UUID creaTask(String usernameAdmin, CreaTaskDTO creaTaskDTO) throws AccessDeniedException {
+    public UUID creaTask(UUID progettoId, CreaTaskDTO creaTaskDTO, String usernameAdmin) throws AccessDeniedException {
 
         User admin = userRepository.findByUsername(usernameAdmin).orElseThrow();
 
@@ -35,7 +35,7 @@ public class TaskService {
             throw new AccessDeniedException("solo gli admin");
         }
 
-        Progetto progetto = progettoRepository.findProgettoByNome(creaTaskDTO.getNomeProgetto()).orElseThrow();
+        Progetto progetto = progettoRepository.findById(progettoId).orElseThrow();
 
         if(!progetto.getAdmin().getId().equals(admin.getId())) {
             throw new AccessDeniedException("solo l'admin di questo progetto può creare task");
@@ -51,12 +51,9 @@ public class TaskService {
         return task.getId();
     }
 
-    public List<Task> visualizzaTask(ProgettoDTO dto, String usernameAdmin){
+    public List<Task> visualizzaTask(UUID progettoId, String usernameAdmin){
 
-        Progetto p = progettoRepository.findProgettoByNome(dto.getNome()).orElseThrow();
-
-        System.out.println(usernameAdmin);
-        System.out.println(p.getAdmin().getUsername());
+        Progetto p = progettoRepository.findById(progettoId).orElseThrow();
         if(!p.getAdmin().getUsername().equals(usernameAdmin)) {
             throw new IllegalArgumentException("impossibile accedere a questo progetto");
         }

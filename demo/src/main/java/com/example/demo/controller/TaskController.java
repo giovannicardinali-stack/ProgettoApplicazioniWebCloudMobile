@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/task")
+@RequestMapping("/api/v1")
 public class TaskController {
     private final TaskService taskService;
 
@@ -21,17 +21,18 @@ public class TaskController {
         this.taskService = taskService;
     }
 
-    @PostMapping("/aggiungiTask")
-    public ResponseEntity<UUID> creaTask(@RequestBody CreaTaskDTO creataskDTO,
-                                           @AuthenticationPrincipal UserDetails admin) throws Exception {
+    @PostMapping("/admin/progetti/{progettoId}/task")
+    public ResponseEntity<UUID> creaTask(@PathVariable UUID progettoId,
+                                         @RequestBody CreaTaskDTO creataskDTO,
+                                         @AuthenticationPrincipal UserDetails admin) throws Exception {
 
-        return ResponseEntity.ok(taskService.creaTask(admin.getUsername(), creataskDTO));
+        return ResponseEntity.ok(taskService.creaTask(progettoId, creataskDTO, admin.getUsername()));
     }
 
-    @GetMapping("/visualizza")
-    public ResponseEntity<List<Task>> visualizzaTask(@RequestBody ProgettoDTO dto,
+    @GetMapping("/admin/progetti/{progettoId}/task")
+    public ResponseEntity<List<Task>> visualizzaTask(@PathVariable UUID progettoId,
                                                      @AuthenticationPrincipal UserDetails admin){
-        return ResponseEntity.ok(taskService.visualizzaTask(dto, admin.getUsername()));
+        return ResponseEntity.ok(taskService.visualizzaTask(progettoId, admin.getUsername()));
     }
 
     @GetMapping("/taskDipendente")

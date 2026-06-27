@@ -12,5 +12,4 @@ public class CreaTaskDTO {
     private String obiettivo;
     private LocalDate dataInizio;
     private LocalDate dataFine;
-    private String nomeProgetto;
 }

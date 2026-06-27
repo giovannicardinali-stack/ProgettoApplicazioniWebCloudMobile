@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/admin/progetti")
+@RequestMapping("/api/v1/admin/progetti")
 public class ProgettoController {
     ProgettoService progettoService;
 
