@@ -30,7 +30,7 @@ public class AuthController {
         return ResponseEntity.ok(userService.registerUser(registerDTO));
     }
 
-    @PostMapping("/testcreazione")
+    @PostMapping("/admin")
     public ResponseEntity<?> creaAdmin(){
 
         return ResponseEntity.ok(userService.creaAdmin());

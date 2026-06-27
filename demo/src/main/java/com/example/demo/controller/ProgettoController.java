@@ -24,7 +24,7 @@ public class ProgettoController {
         return ResponseEntity.ok(progettoService.creaProgetto(progettoDTO, admin.getUsername()));
     }
 
-    @PostMapping("/elimina")
+    @DeleteMapping("/elimina")
     public ResponseEntity<?> eliminaProgetto(@RequestBody ProgettoDTO dto,
                                              @AuthenticationPrincipal UserDetails admin){
 
