@@ -8,6 +8,5 @@ import java.util.UUID;
 @Getter
 @Setter
 public class IscriviDipendenteDTO {
-    private String nomeProgetto;
     private String usernameDipendente;
 }

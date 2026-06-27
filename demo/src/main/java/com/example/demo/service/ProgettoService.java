@@ -11,6 +11,7 @@ import com.example.demo.repo.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 
 @Service
@@ -42,9 +43,9 @@ public class ProgettoService {
         return progettoRepository.save(progetto);
     }
 
-    public void eliminaProgetto(ProgettoDTO dto, String usernameAdmin){
+    public void eliminaProgetto(UUID id, String usernameAdmin){
 
-        Progetto progetto = progettoRepository.findProgettoByNome(dto.getNome()).orElse(null);
+        Progetto progetto = progettoRepository.findById(id).orElse(null);
 
         if(progetto == null){
             throw new IllegalArgumentException("progetto non trovato");
@@ -58,10 +59,10 @@ public class ProgettoService {
         progettoRepository.delete(progetto);
     }
 
-    public Progetto iscriviDipendente(IscriviDipendenteDTO dto, String usernameAdmin){
+    public Progetto iscriviDipendente(UUID progettoId, IscriviDipendenteDTO dto, String usernameAdmin){
 
         User dipendente = userRepository.findByUsername(dto.getUsernameDipendente()).orElseThrow(() -> new RuntimeException("non trovato"));
-        Progetto progetto = progettoRepository.findProgettoByNome(dto.getNomeProgetto()).orElseThrow(() -> new RuntimeException("non trovato"));
+        Progetto progetto = progettoRepository.findById(progettoId).orElseThrow(() -> new RuntimeException("non trovato"));
         if(!progetto.getAdmin().getUsername().equals(usernameAdmin)){
             throw new IllegalArgumentException("non sei l'admin di questo progetto");
         }
@@ -75,9 +76,9 @@ public class ProgettoService {
         return progettoRepository.findProgettoByAdmin(admin);
     }
 
-    public DettagliProgettoDTO visualizzaDettagli(ProgettoDTO dto,
+    public DettagliProgettoDTO visualizzaDettagli(UUID progettoId,
                                                   String usernameAdmin){
-        Progetto progetto = progettoRepository.findProgettoByNome(dto.getNome()).orElse(null);
+        Progetto progetto = progettoRepository.findById(progettoId).orElse(null);
         if(progetto == null){
             throw new IllegalArgumentException("progetto non trovato");
         }

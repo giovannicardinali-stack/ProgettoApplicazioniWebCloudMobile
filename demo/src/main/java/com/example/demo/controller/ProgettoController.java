@@ -9,8 +9,10 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @RestController
-@RequestMapping("/admin/progetto")
+@RequestMapping("/admin/progetti")
 public class ProgettoController {
     ProgettoService progettoService;
 
@@ -18,36 +20,37 @@ public class ProgettoController {
         this.progettoService = progettoService;
     }
 
-    @PostMapping("/crea")
+    @PostMapping
     public ResponseEntity<?> creaProgetto(@RequestBody ProgettoDTO progettoDTO,
                                           @AuthenticationPrincipal UserDetails admin){
         return ResponseEntity.ok(progettoService.creaProgetto(progettoDTO, admin.getUsername()));
     }
 
-    @DeleteMapping("/elimina")
-    public ResponseEntity<?> eliminaProgetto(@RequestBody ProgettoDTO dto,
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> eliminaProgetto(@PathVariable UUID id,
                                              @AuthenticationPrincipal UserDetails admin){
 
-        this.progettoService.eliminaProgetto(dto, admin.getUsername());
+        this.progettoService.eliminaProgetto(id, admin.getUsername());
         return ResponseEntity.ok("Progetto eliminato con successo");
     }
 
-    @PostMapping("/iscrivi")
-    public ResponseEntity<?> iscriviDipendente(@RequestBody IscriviDipendenteDTO dto,
+    @PostMapping("/{progettoId}/dipendenti")
+    public ResponseEntity<?> iscriviDipendente(@PathVariable UUID progettoId,
+                                               @RequestBody IscriviDipendenteDTO dto,
                                                @AuthenticationPrincipal UserDetails admin){
-        return ResponseEntity.ok(progettoService.iscriviDipendente(dto, admin.getUsername()));
+        return ResponseEntity.ok(progettoService.iscriviDipendente(progettoId, dto, admin.getUsername()));
     }
 
     //visualizza tutti i progetti dell'admin
-    @GetMapping("/visualizza")
+    @GetMapping
     public ResponseEntity<?> visualizzaProgetti(@AuthenticationPrincipal UserDetails admin){
         return ResponseEntity.ok(progettoService.visualizzaProgetti(admin.getUsername()));
     }
 
     //visualizza i dettagli di un progetto scelto
-    @GetMapping("/dettagli")
-    public ResponseEntity<DettagliProgettoDTO> visualizzaDettagli(@RequestBody ProgettoDTO dto,
+    @GetMapping("/{progettoId}")
+    public ResponseEntity<DettagliProgettoDTO> visualizzaDettagli(@PathVariable UUID progettoId,
                                                                   @AuthenticationPrincipal UserDetails admin){
-        return ResponseEntity.ok(progettoService.visualizzaDettagli(dto, admin.getUsername()));
+        return ResponseEntity.ok(progettoService.visualizzaDettagli(progettoId, admin.getUsername()));
     }
 }
