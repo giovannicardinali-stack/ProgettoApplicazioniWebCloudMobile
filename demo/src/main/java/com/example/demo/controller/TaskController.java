@@ -1,7 +1,6 @@
 package com.example.demo.controller;
 
 import com.example.demo.dto.CreaTaskDTO;
-import com.example.demo.dto.ProgettoDTO;
 import com.example.demo.entity.Task;
 import com.example.demo.service.TaskService;
 import org.springframework.http.ResponseEntity;
@@ -35,15 +34,10 @@ public class TaskController {
         return ResponseEntity.ok(taskService.visualizzaTask(progettoId, admin.getUsername()));
     }
 
-    @GetMapping("/taskDipendente")
-    public ResponseEntity<List<Task>> visualizzaTaskDipendente(@RequestBody ProgettoDTO dto,
+    @GetMapping("/dipendente/progetti/{progettoId}/task")
+    public ResponseEntity<List<Task>> visualizzaTaskDipendente(@PathVariable UUID progettoId,
                                                                @AuthenticationPrincipal UserDetails dipendente){
-        return ResponseEntity.ok(taskService.visualizzaTaskDIpendente(dto, dipendente.getUsername()));
-
-    }
-
-    @PostMapping("/soluzione")
-    public void SoluzioneTaks(){
+        return ResponseEntity.ok(taskService.visualizzaTaskDIpendente(progettoId, dipendente.getUsername()));
 
     }
 }

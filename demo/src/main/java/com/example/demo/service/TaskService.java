@@ -1,7 +1,6 @@
 package com.example.demo.service;
 
 import com.example.demo.dto.CreaTaskDTO;
-import com.example.demo.dto.ProgettoDTO;
 import com.example.demo.entity.Progetto;
 import com.example.demo.entity.Ruolo;
 import com.example.demo.entity.Task;
@@ -61,9 +60,9 @@ public class TaskService {
         return taskRepository.findTasksByProgetto(p);
     }
 
-    public List<Task> visualizzaTaskDIpendente(ProgettoDTO dto, String usernameDipendente){
+    public List<Task> visualizzaTaskDIpendente(UUID progettoId, String usernameDipendente){
 
-        Progetto progetto =  progettoRepository.findProgettoByNome(dto.getNome()).orElseThrow();
+        Progetto progetto =  progettoRepository.findById(progettoId).orElseThrow();
         User dipendente = userRepository.findByUsername(usernameDipendente).orElseThrow();
         if(!progetto.getDipendenti().contains(dipendente)){
             throw new IllegalArgumentException("impossibile accedere a questo progetto");

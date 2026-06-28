@@ -26,12 +26,11 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         //PUBLIC ENDPOINTS
-                        .requestMatchers("/auth/**").permitAll()
+                        .requestMatchers("/api/v1/auth/**").permitAll()
 
                         //ADMIN ONLY
-                        .requestMatchers("/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/task/aggiungiTask").hasRole("ADMIN")
-                        .requestMatchers("/task/visualizza").hasRole("ADMIN")
+                        .requestMatchers("/api/v1/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/api/v1/dipendente/**").hasRole("DIPENDENTE")
 
                         //ALL OTHER REQUESTS
                         .anyRequest().authenticated()

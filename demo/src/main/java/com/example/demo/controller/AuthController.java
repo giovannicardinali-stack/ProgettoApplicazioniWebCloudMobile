@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
 public class AuthController {
 
@@ -27,10 +27,11 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@RequestBody RegisterDTO registerDTO){
+        System.out.println("ciao");
         return ResponseEntity.ok(userService.registerUser(registerDTO));
     }
 
-    @PostMapping("/admin")
+    @PostMapping("/test")
     public ResponseEntity<?> creaAdmin(){
 
         return ResponseEntity.ok(userService.creaAdmin());

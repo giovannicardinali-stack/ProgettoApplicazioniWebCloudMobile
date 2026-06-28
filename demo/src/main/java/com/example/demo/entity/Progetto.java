@@ -15,7 +15,7 @@ public class Progetto {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id = UUID.randomUUID();
+    private UUID id;
     @ManyToOne
     private User admin;
     //unique

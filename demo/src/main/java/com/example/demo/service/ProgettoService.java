@@ -82,7 +82,7 @@ public class ProgettoService {
         if(progetto == null){
             throw new IllegalArgumentException("progetto non trovato");
         }
-        if(progetto.getAdmin().getUsername().equals(usernameAdmin)){
+        if(!progetto.getAdmin().getUsername().equals(usernameAdmin)){
             throw new IllegalArgumentException("non sei l'admin di questo progetto");
         }
         DettagliProgettoDTO risposta = new  DettagliProgettoDTO();
