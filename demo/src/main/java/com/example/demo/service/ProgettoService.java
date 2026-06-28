@@ -67,7 +67,11 @@ public class ProgettoService {
             throw new IllegalArgumentException("non sei l'admin di questo progetto");
         }
 
-        progetto.aggiungiDipendente(dipendente);
+        //questo prende il riferimento alla lista nella classe progetto,
+        //modificandola, si modifica anche quella nella classe
+        List<User> dipendenti = progetto.getDipendenti();
+        dipendenti.add(dipendente);
+        dipendente.setProgetto(progetto);
         return progettoRepository.save(progetto);
     }
 

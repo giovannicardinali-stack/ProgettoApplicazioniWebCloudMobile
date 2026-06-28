@@ -27,6 +27,10 @@ public class User {
     @Column(nullable = false)
     private Ruolo ruolo = Ruolo.DIPENDENTE;
 
+    @ManyToOne
+    @JoinColumn(name = "progetto_id")
+    private Progetto progetto;
+
     public User() {
     }
 }

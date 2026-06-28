@@ -20,15 +20,10 @@ public class Progetto {
     private User admin;
     //unique
     private String nome;
-    @OneToMany
+    @OneToMany(mappedBy = "progetto")
     private List<User> dipendenti = new ArrayList<>();
     @OneToMany
     private List<Task> taskInCorso = new ArrayList<>();
     @OneToMany
     private List<Task> taskTerminate = new ArrayList<>();
-
-
-    public void aggiungiDipendente(User dipendente){
-        dipendenti.add(dipendente);
-    }
 }
