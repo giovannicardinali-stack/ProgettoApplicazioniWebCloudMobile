@@ -1,6 +1,7 @@
 package com.example.demo.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -29,6 +30,7 @@ public class User {
 
     @ManyToOne
     @JoinColumn(name = "progetto_id")
+    @JsonBackReference
     private Progetto progetto;
 
     public User() {

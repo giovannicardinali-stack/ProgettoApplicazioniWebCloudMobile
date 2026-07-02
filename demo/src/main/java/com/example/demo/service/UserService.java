@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.controller.LoginResponseDTO;
 import com.example.demo.dto.RegisterDTO;
 import com.example.demo.entity.Ruolo;
 import com.example.demo.entity.User;
@@ -19,7 +20,7 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public String loginUser(RegisterDTO dto) {
+    public LoginResponseDTO loginUser(RegisterDTO dto) {
 
         User user = userRepository.findByUsername(dto.getUsername()).orElseThrow(() -> new RuntimeException("utente non trovato"));
 
@@ -27,7 +28,12 @@ public class UserService {
             throw new RuntimeException("credenziali non valide");
         }
 
-        return JwtUtil.generateToken(user.getUsername(), user.getRuolo().name());
+        String token = JwtUtil.generateToken(user.getUsername(), user.getRuolo().name());
+
+        LoginResponseDTO dtoresponse = new LoginResponseDTO();
+        dtoresponse.setToken(token);
+        dtoresponse.setRuolo(user.getRuolo().name());
+        return dtoresponse;
     }
 
     public String registerUser(RegisterDTO registerDTO){

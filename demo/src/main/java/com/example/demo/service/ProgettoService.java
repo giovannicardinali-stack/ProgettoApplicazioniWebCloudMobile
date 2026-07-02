@@ -72,7 +72,7 @@ public class ProgettoService {
         List<User> dipendenti = progetto.getDipendenti();
         dipendenti.add(dipendente);
         dipendente.setProgetto(progetto);
-        return progettoRepository.save(progetto);
+        return progetto;
     }
 
     public List<Progetto> visualizzaProgetti(String usernameAdmin){
@@ -93,6 +93,7 @@ public class ProgettoService {
         risposta.setIdProgetto(progetto.getId());
         risposta.setNomeProgetto(progetto.getNome());
         risposta.setAdmin(progetto.getAdmin());
+        risposta.setDipendenti(progetto.getDipendenti());
         risposta.setTaskInCorso(progetto.getTaskInCorso());
         risposta.setTaskTerminate(progetto.getTaskTerminate());
         return risposta;
