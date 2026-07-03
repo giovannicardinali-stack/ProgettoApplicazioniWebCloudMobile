@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -75,9 +76,13 @@ public class ProgettoService {
         return progetto;
     }
 
-    public List<Progetto> visualizzaProgetti(String usernameAdmin){
+    public List<ProgettoDTO> visualizzaProgetti(String usernameAdmin){
         User admin = userRepository.findByUsername(usernameAdmin).orElseThrow(() -> new RuntimeException("non trovato"));
-        return progettoRepository.findProgettoByAdmin(admin);
+
+        return progettoRepository.findProgettoByAdmin(admin).stream()
+                .map(p -> {ProgettoDTO dto = new ProgettoDTO();
+                dto.setNome(p.getNome());
+                return dto;}).collect(Collectors.toList());
     }
 
     public DettagliProgettoDTO visualizzaDettagli(UUID progettoId,

@@ -29,9 +29,9 @@ public class AuthController {
         return ResponseEntity.ok(userService.registerUser(registerDTO));
     }
 
-    @PostMapping("/test")
-    public ResponseEntity<?> creaAdmin(){
-
-        return ResponseEntity.ok(userService.creaAdmin());
-    }
+//    @PostMapping("/test")
+//    public ResponseEntity<?> creaAdmin(){
+//
+//        return ResponseEntity.ok(userService.creaAdmin());
+//    }
 }
