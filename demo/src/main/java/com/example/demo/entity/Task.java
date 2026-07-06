@@ -18,6 +18,7 @@ public class Task {
     @ManyToOne
     private User admin;
     private String obiettivo;
+    private String titolo;
     @ManyToOne
     private Progetto progetto;
     private LocalDate dataInizio;

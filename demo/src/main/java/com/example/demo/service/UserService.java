@@ -1,6 +1,6 @@
 package com.example.demo.service;
 
-import com.example.demo.controller.LoginResponseDTO;
+import com.example.demo.dto.LoginResponseDTO;
 import com.example.demo.dto.RegisterDTO;
 import com.example.demo.entity.Ruolo;
 import com.example.demo.entity.User;

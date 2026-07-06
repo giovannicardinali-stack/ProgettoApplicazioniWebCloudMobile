@@ -81,7 +81,8 @@ public class ProgettoService {
 
         return progettoRepository.findProgettoByAdmin(admin).stream()
                 .map(p -> {ProgettoDTO dto = new ProgettoDTO();
-                dto.setNome(p.getNome());
+                                    dto.setNome(p.getNome());
+                                    dto.setId(p.getId());
                 return dto;}).collect(Collectors.toList());
     }
 
@@ -92,15 +93,15 @@ public class ProgettoService {
             throw new IllegalArgumentException("progetto non trovato");
         }
         if(!progetto.getAdmin().getUsername().equals(usernameAdmin)){
+            System.out.println("ecco qui");
             throw new IllegalArgumentException("non sei l'admin di questo progetto");
         }
         DettagliProgettoDTO risposta = new  DettagliProgettoDTO();
-        risposta.setIdProgetto(progetto.getId());
+        risposta.setId(progettoId);
         risposta.setNomeProgetto(progetto.getNome());
         risposta.setAdmin(progetto.getAdmin());
         risposta.setDipendenti(progetto.getDipendenti());
         risposta.setTaskInCorso(progetto.getTaskInCorso());
-        risposta.setTaskTerminate(progetto.getTaskTerminate());
         return risposta;
     }
 }

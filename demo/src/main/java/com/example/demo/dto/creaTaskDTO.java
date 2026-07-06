@@ -4,11 +4,11 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
-import java.util.UUID;
 
 @Getter
 @Setter
 public class CreaTaskDTO {
+    private String titolo;
     private String obiettivo;
     private LocalDate dataInizio;
     private LocalDate dataFine;

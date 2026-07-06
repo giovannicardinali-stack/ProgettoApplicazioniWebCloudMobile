@@ -40,6 +40,7 @@ public class TaskService {
             throw new AccessDeniedException("solo l'admin di questo progetto può creare task");
         }
         Task task = new Task();
+        task.setTitolo(creaTaskDTO.getTitolo());
         task.setAdmin(admin);
         task.setObiettivo(creaTaskDTO.getObiettivo());
         task.setProgetto(progetto);
