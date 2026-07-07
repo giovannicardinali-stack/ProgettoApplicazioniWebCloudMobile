@@ -33,7 +33,6 @@ public class TaskController {
                                                      @AuthenticationPrincipal UserDetails admin){
         return ResponseEntity.ok(taskService.visualizzaTask(progettoId, admin.getUsername()));
     }
-
     @GetMapping("/dipendente/progetti/{progettoId}/task")
     public ResponseEntity<List<Task>> visualizzaTaskDipendente(@PathVariable UUID progettoId,
                                                                @AuthenticationPrincipal UserDetails dipendente){
