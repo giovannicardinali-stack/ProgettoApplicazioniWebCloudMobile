@@ -7,8 +7,8 @@ interface LoginProps {
 }
 
 const LoginForm = ({ onLoginSuccess }: LoginProps) => {
-  const [username, setUsername] = useState<String>("");
-  const [password, setPassword] = useState<String>("");
+  const [username, setUsername] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
   //variabile per mettere il button di login in fase di "caricamento"
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -54,6 +54,17 @@ const LoginForm = ({ onLoginSuccess }: LoginProps) => {
                   required
                 />
               </div>
+              <button //se isLoading è true, nel bottone sarà scritto accedi, altrimenti, caricamento
+              type= 'submit'
+              className="btn btn-primary w-100"
+              disabled={isLoading}>
+                if(isLoading == false){
+                  "Accedi"
+                }
+                else{
+                  "Caricamento..."
+                }
+              </button>
             </form>
           </div>
         </div>
