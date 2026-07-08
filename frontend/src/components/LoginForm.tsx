@@ -1,26 +1,49 @@
 import React, { useState } from "react";
 import axios from "axios";
 import api from "../services/api";
+import { useAuth } from "../services/AuthContext";
 
+//per usare loginform bisogna passare una funzione chiamata onLoginSuccess
 interface LoginProps {
   onLoginSuccess: (ruolo: string) => void;
 }
 
+//dichiarazione componente LoginForm
 const LoginForm = ({ onLoginSuccess }: LoginProps) => {
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   //variabile per mettere il button di login in fase di "caricamento"
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  //sfrutta la funzione login di authcontext
+  const { login } = useAuth();
 
-  //attivato al click del button
+  //comportamento attivato al click del button
   const handleLogin = async (e: React.FormEvent) => {
     //evita che il browser ricarichi automaticamente la pagina, lasciando lavorare React (single page application)
     e.preventDefault();
     //imposta la variabile a true, disabilitando il bottone
     setIsLoading(true);
 
-    try{
-        const response = await 
+    try {
+      const response = await api.post("/api/v1/auth/login", {
+        username,
+        password,
+      });
+
+      const { token, ruolo } = response.data;
+
+      if (token && ruolo) {
+        login(token);
+        localStorage.setItem("ruolo", ruolo);
+        onLoginSuccess(ruolo);
+      } else {
+        alert("Impossibile trovare ruolo");
+      }
+    } catch (error) {
+      console.error("errore durante il login: ", error);
+      alert("Credenziali errate o server non raggiungibile.");
+    } finally {
+      setIsLoading(false); //riabilita il bottone, così se il login non è andato a buon fine l'utente può riprovare
     }
   };
 
@@ -38,6 +61,7 @@ const LoginForm = ({ onLoginSuccess }: LoginProps) => {
                   type="text"
                   className="form-control"
                   value={username}
+                  //salva l'username nella variabile
                   onChange={(e) => setUsername(e.target.value)}
                   required
                 />
@@ -50,20 +74,18 @@ const LoginForm = ({ onLoginSuccess }: LoginProps) => {
                   type="text"
                   className="form-control"
                   value={password}
+                  //salva la password nella variabile
                   onChange={(e) => setPassword(e.target.value)}
                   required
                 />
               </div>
               <button //se isLoading è true, nel bottone sarà scritto accedi, altrimenti, caricamento
-              type= 'submit'
-              className="btn btn-primary w-100"
-              disabled={isLoading}>
-                if(isLoading == false){
-                  "Accedi"
-                }
-                else{
-                  "Caricamento..."
-                }
+                type="submit"
+                className="btn btn-primary w-100"
+                disabled={isLoading}
+              >
+                if(isLoading == false){"Accedi"}
+                else{"Caricamento..."}
               </button>
             </form>
           </div>
