@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useActionState, useState } from "react";
 import Sidebar from "./Sidebar";
 
 interface AdminProps {
@@ -10,7 +10,9 @@ const DashboardAdmin = ({ onLogout }: AdminProps) => {
   const [idProgettoSelezionato, setIdProgettoSelezionato] = useState<
     number | null
   >(null);
-  const [nomeAdmin, setNomeAdmin];
+  const [nomeUtenteLoggato, setNomeUtenteLoggato] = useState(
+    localStorage.getItem("nomeUtenteLoggato"),
+  );
 
   return (
     <div className="d-flex">
