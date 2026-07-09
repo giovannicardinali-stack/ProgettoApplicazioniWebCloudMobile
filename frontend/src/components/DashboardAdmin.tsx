@@ -45,3 +45,5 @@ const DashboardAdmin = ({ onLogout }: AdminProps) => {
     </div>
   );
 };
+
+export default DashboardAdmin
