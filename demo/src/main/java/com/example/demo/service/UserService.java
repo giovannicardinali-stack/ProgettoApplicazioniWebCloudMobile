@@ -33,6 +33,7 @@ public class UserService {
         LoginResponseDTO dtoresponse = new LoginResponseDTO();
         dtoresponse.setToken(token);
         dtoresponse.setRuolo(user.getRuolo().name());
+        dtoresponse.setUsername(user.getUsername());
         return dtoresponse;
     }
 

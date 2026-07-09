@@ -1,26 +1,44 @@
 import { useState } from "react";
 import Sidebar from "./Sidebar";
 
-interface AdminProps{
-    onLogout: () => void;
+interface AdminProps {
+  onLogout: () => void;
 }
 
-const DashboardAdmin = ({onLogout}: AdminProps) => {
+const DashboardAdmin = ({ onLogout }: AdminProps) => {
   const [vistaCorrente, setVistaCorrente] = useState("HOME");
-  const [idProgettoSelezionato, setIdProgettoSelezionato] = useState<number | null>(null);
-
-  const
+  const [idProgettoSelezionato, setIdProgettoSelezionato] = useState<
+    number | null
+  >(null);
+  const [nomeAdmin, setNomeAdmin];
 
   return (
     <div className="d-flex">
-      <Sidebar onLogout={onLogout} adminName="admin" onNavigate={setVistaCorrente} />
+      <Sidebar
+        onLogout={onLogout}
+        adminName="admin"
+        onNavigate={setVistaCorrente}
+      />
 
-      <main className="flex-grow-1 p-5" style={{ backgroundColor: "#f8f9fa", minHeight: "100vh" }}>
-        {vistaCorrente == "HOME" && (<div>
+      <main
+        className="flex-grow-1 p-5"
+        style={{ backgroundColor: "#f8f9fa", minHeight: "100vh" }}
+      >
+        {vistaCorrente === "HOME" && (
+          <div>
             <h1> Dashboard amministratore </h1>
-            <p>Benvenuto nell'area di gestione. Usa la sidebar per navigare. </p>
-        </div>)}
+            <p>
+              Benvenuto nell'area di gestione. Usa la sidebar per navigare.{" "}
+            </p>
+          </div>
+        )}
 
+        {vistaCorrente === "PROGETTI" && (
+          <div>
+            {" "}
+            <h1> Gestione Progetti</h1>
+          </div>
+        )}
       </main>
     </div>
   );
