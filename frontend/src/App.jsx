@@ -1,8 +1,6 @@
+import { useState } from "react";
 import DashboardAdmin from "./components/DashboardAdmin";
 import LoginForm from "./components/LoginForm";
-
-const { useState } = require("react");
-
 
 function App() {
     const[RuoloUser, setRuoloUser] = useState(() => {
@@ -33,7 +31,7 @@ function App() {
         return <DashboardAdmin onLogout={handleLogout} />
     }
 
-    return null;
+    return <div>Ruolo non autorizzato</div>;
     
 }
 

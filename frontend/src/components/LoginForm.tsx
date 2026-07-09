@@ -85,8 +85,7 @@ const LoginForm = ({ onLoginSuccess }: LoginProps) => {
                 className="btn btn-primary w-100"
                 disabled={isLoading}
               >
-                if(isLoading == false){"Accedi"}
-                else{"Caricamento..."}
+                {isLoading ? "Caricamento..." : "Accedi"}
               </button>
             </form>
           </div>
