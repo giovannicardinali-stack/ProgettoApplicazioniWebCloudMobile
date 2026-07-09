@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import api from "../api";
+import DettagliProgetto from "./DettagliProgetto";
 
 interface Progetto {
   id: string;
@@ -26,7 +27,7 @@ const GestoreProgetti = () => {
 
   if(idProgettoSelezionato !== null){
     return(
-        
+        <DettagliProgetto idProgetto={idProgettoSelezionato} onBack={() => setIdProgettoSelezionato}  />
     )
   }
 
