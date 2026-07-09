@@ -45,3 +45,5 @@ const Sidebar = ({ onLogout, adminName, onNavigate }: SidebarProps) => {
     </nav>
   );
 };
+
+export default Sidebar;
