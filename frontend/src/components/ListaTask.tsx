@@ -1,4 +1,4 @@
-import { use, useState } from "react";
+import { use, useEffect, useState } from "react";
 import api from "../services/api";
 
 interface Task {
@@ -20,6 +20,12 @@ const ListaTask = ({ idProgetto, tasks, onTaskCreated }: Props) => {
   const [dataFine, setDataFine] = useState("");
 
   const [showForm, setShowForm] = useState(false);
+
+  useEffect(() => {
+    api.get(`/api/v1/admin/progetti/${idProgetto}/task`).then((res) => {
+
+    }).catch((err) => console.error("errore caricamento task", err));
+  }, [idProgetto]);
 
   const creaTask = () => {
     api
@@ -45,7 +51,10 @@ const ListaTask = ({ idProgetto, tasks, onTaskCreated }: Props) => {
       <button
         className="btn btn-success mb-3"
         onClick={() => setShowForm(!showForm)}
-      />
+      >
+        {" "}
+        {showForm ? "Annulla" : "+ Aggiungi Nuova Task"}
+      </button>
 
       {showForm && (
         <div className="card p-4 mb-4 bg-light">

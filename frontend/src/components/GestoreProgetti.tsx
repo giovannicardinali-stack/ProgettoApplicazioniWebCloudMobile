@@ -29,7 +29,7 @@ const GestoreProgetti = () => {
     return (
       <DettagliProgetto
         idProgetto={idProgettoSelezionato}
-        onBack={() => setIdProgettoSelezionato}
+        onBack={() => setIdProgettoSelezionato(null)}
       />
     );
   }
