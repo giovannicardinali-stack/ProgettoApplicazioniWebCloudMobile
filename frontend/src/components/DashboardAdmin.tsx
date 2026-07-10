@@ -1,5 +1,6 @@
 import { useActionState, useState } from "react";
 import Sidebar from "./Sidebar";
+import GestoreProgetti from "./GestoreProgetti";
 
 interface AdminProps {
   onLogout: () => void;
@@ -13,6 +14,11 @@ const DashboardAdmin = ({ onLogout }: AdminProps) => {
   const [nomeUtenteLoggato, setNomeUtenteLoggato] = useState(
     localStorage.getItem("nomeUtenteLoggato"),
   );
+
+  const vaiAlDettaglio = (id: number) => {
+    setIdProgettoSelezionato(id);
+    setVistaCorrente("DETTAGLIO_PROGETTO");
+  };
 
   return (
     <div className="d-flex">
@@ -29,16 +35,14 @@ const DashboardAdmin = ({ onLogout }: AdminProps) => {
         {vistaCorrente === "HOME" && (
           <div>
             <h1> Dashboard amministratore </h1>
-            <p>
-              Benvenuto nell'area di gestione. Usa la sidebar per navigare.{" "}
-            </p>
+            <p>Benvenuto nell'area di gestione. Usa la sidebar per navigare.</p>
           </div>
         )}
 
         {vistaCorrente === "PROGETTI" && (
           <div>
-            {" "}
             <h1> Gestione Progetti</h1>
+            <GestoreProgetti />
           </div>
         )}
       </main>
@@ -46,4 +50,4 @@ const DashboardAdmin = ({ onLogout }: AdminProps) => {
   );
 };
 
-export default DashboardAdmin
+export default DashboardAdmin;

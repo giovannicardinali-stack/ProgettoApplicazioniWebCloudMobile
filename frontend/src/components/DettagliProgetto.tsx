@@ -1,28 +1,29 @@
 import { useEffect, useState } from "react";
-import api from "../api";
+import ListaTask from "./ListaTask";
+import api from "../services/api";
 
 interface props {
   idProgetto: string;
   onBack: () => void;
 }
 
-interface user{
-    id: string;
-    username: string;
+interface User {
+  id: string;
+  username: string;
 }
 
 interface Progetto {
-    id: string;
-    nomeProgetto: string;
-    admin: user;
-    dipendenti: user[];
-    taskInCorso: task[]
+  id: string;
+  nomeProgetto: string;
+  admin: User;
+  dipendenti: User[];
+  taskInCorso: task[];
 }
 
-interface task{
-    id: string;
-    titolo: string;
-    obiettivo: string;
+interface task {
+  id: string;
+  titolo: string;
+  obiettivo: string;
 }
 
 const DettagliProgetto = ({ idProgetto, onBack }: props) => {
@@ -48,7 +49,7 @@ const DettagliProgetto = ({ idProgetto, onBack }: props) => {
         &larr; Torna alla lista
       </button>
       <h2>Progetto: {data.nomeProgetto}</h2>
-      
+
       {/* Button Group di Bootstrap */}
       <div className="btn-group mb-4" role="group">
         <button
@@ -81,13 +82,16 @@ const DettagliProgetto = ({ idProgetto, onBack }: props) => {
       ) : (
         <div className="mt-3">
           <h4>Task per questo progetto:</h4>
-          {/* TODO lista task */}
 
+          <ListaTask
+            idProgetto={idProgetto}
+            tasks={data.taskInCorso || []}
+            onTaskCreated={ricaricaDati}
+          />
         </div>
       )}
     </div>
-  )
+  );
 };
-
 
 export default DettagliProgetto;

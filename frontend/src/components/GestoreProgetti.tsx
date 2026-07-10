@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import api from "../api";
 import DettagliProgetto from "./DettagliProgetto";
+import api from "../services/api";
 
 interface Progetto {
   id: string;
@@ -25,10 +25,13 @@ const GestoreProgetti = () => {
       .catch((err) => console.error("Errore nel recupero dei progetti: ", err));
   }, []);
 
-  if(idProgettoSelezionato !== null){
-    return(
-        <DettagliProgetto idProgetto={idProgettoSelezionato} onBack={() => setIdProgettoSelezionato}  />
-    )
+  if (idProgettoSelezionato !== null) {
+    return (
+      <DettagliProgetto
+        idProgetto={idProgettoSelezionato}
+        onBack={() => setIdProgettoSelezionato}
+      />
+    );
   }
 
   return (
