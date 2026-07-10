@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import api from "../services/api";
 
-const CreaTask = ({
+const CreatoreTask = ({
   idProgetto,
   onTaskCreated,
 }: {
@@ -43,8 +43,8 @@ const CreaTask = ({
       <input
         className="form-control mb-2"
         placeholder="Obiettivo"
-        value={titolo}
-        onChange={(e) => setTitolo(e.target.value)}
+        value={obiettivo}
+        onChange={(e) => setObiettivo(e.target.value)}
       />
 
       <div className="row">
@@ -69,3 +69,4 @@ const CreaTask = ({
     </div>
   );
 };
+export default CreatoreTask;

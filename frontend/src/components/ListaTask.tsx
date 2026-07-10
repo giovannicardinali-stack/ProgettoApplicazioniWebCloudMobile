@@ -1,5 +1,6 @@
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import api from "../services/api";
+import CreatoreTask from "./CreatoreTask";
 
 interface Task {
   id: string;
@@ -9,42 +10,28 @@ interface Task {
 
 interface Props {
   idProgetto: string;
-  tasks: Task[];
-  onTaskCreated: () => void;
+  //tasks: Task[];
+  //onTaskCreated: () => void;
 }
 
-const ListaTask = ({ idProgetto, tasks, onTaskCreated }: Props) => {
-  const [titolo, setTitolo] = useState("");
-  const [obiettivo, setObiettivo] = useState("");
-  const [dataInizio, setDataInizio] = useState("");
-  const [dataFine, setDataFine] = useState("");
-
+const ListaTask = ({ idProgetto }: Props) => {
   const [showForm, setShowForm] = useState(false);
+  const [tasks, setTasks] = useState<Task[]>([]);
+
+  const recuperaTask = () => {
+    api
+      .get(`/api/v1/admin/progetti/${idProgetto}/task`)
+      .then((res) => {
+        console.log("Dati ricevuti:", res.data);
+        setTasks(res.data);
+      })
+
+      .catch((err) => console.error("errore caricamento task", err));
+  };
 
   useEffect(() => {
-    api.get(`/api/v1/admin/progetti/${idProgetto}/task`).then((res) => {
-
-    }).catch((err) => console.error("errore caricamento task", err));
+    recuperaTask();
   }, [idProgetto]);
-
-  const creaTask = () => {
-    api
-      .post(`/api/v1/admin/progetti/${idProgetto}/task`, {
-        titolo,
-        obiettivo,
-        dataInizio,
-        dataFine,
-      })
-      .then(() => {
-        setTitolo("");
-        setObiettivo("");
-        setDataInizio("");
-        setDataFine("");
-        setShowForm(false);
-        onTaskCreated();
-      })
-      .catch((err) => console.error("Errore creazione Task: ", err));
-  };
 
   return (
     <div>
@@ -57,56 +44,26 @@ const ListaTask = ({ idProgetto, tasks, onTaskCreated }: Props) => {
       </button>
 
       {showForm && (
-        <div className="card p-4 mb-4 bg-light">
-          <h5>Nuova Task</h5>
-          <div className="mb-3">
-            <label>Titolo</label>
-            <input
-              className="form-control"
-              value={titolo}
-              onChange={(e) => setTitolo(e.target.value)}
-            />
-          </div>
-          <div className="mb-3">
-            <label>Obiettivo</label>
-            <input
-              className="form-control"
-              value={obiettivo}
-              onChange={(e) => setObiettivo(e.target.value)}
-            />
-          </div>
-          <div className="row">
-            <div className="col">
-              <label>Data Inizio</label>
-              <input
-                type="date"
-                className="form-control"
-                value={dataInizio}
-                onChange={(e) => setDataInizio(e.target.value)}
-              />
-            </div>
-            <div className="col">
-              <label>Data Fine</label>
-              <input
-                type="date"
-                className="form-control"
-                value={dataFine}
-                onChange={(e) => setDataFine(e.target.value)}
-              />
-            </div>
-          </div>
-          <button className="btn btn-primary mt-3" onClick={creaTask}>
-            Salva Task
-          </button>
-        </div>
+        <CreatoreTask
+          idProgetto={idProgetto}
+          onTaskCreated={() => {
+            setShowForm(false);
+          }}
+        />
       )}
 
       <ul className="list-group">
-        {tasks.map((task) => (
-          <li key={task.id} className="list-group-item">
-            {task.titolo || task.obiettivo}
+        {tasks && tasks.length > 0 ? (
+          tasks.map((task) => (
+            <li key={task.id} className="list-group-item">
+              <strong> {task.titolo}</strong> - {task.obiettivo}
+            </li>
+          ))
+        ) : (
+          <li className="list-group-item text-muted">
+            Nessun task presente per questo progetto.
           </li>
-        ))}
+        )}
       </ul>
     </div>
   );

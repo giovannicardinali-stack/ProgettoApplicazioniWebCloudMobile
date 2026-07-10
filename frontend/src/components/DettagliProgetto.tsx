@@ -85,8 +85,6 @@ const DettagliProgetto = ({ idProgetto, onBack }: props) => {
 
           <ListaTask
             idProgetto={idProgetto}
-            tasks={data.taskInCorso || []}
-            onTaskCreated={ricaricaDati}
           />
         </div>
       )}
