@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.dto.CreaTaskDTO;
+import com.example.demo.dto.DettagliTaskDTO;
 import com.example.demo.entity.Progetto;
 import com.example.demo.entity.Ruolo;
 import com.example.demo.entity.Task;
@@ -70,5 +71,35 @@ public class TaskService {
         }
 
         return taskRepository.findTasksByProgettoAndDipendente(progetto, dipendente);
+    }
+
+    public DettagliTaskDTO visualizzaDettagliTask(UUID taskId, String nomeUtente){
+        Task task = taskRepository.findById(taskId).orElseThrow();
+        User utente = userRepository.findByUsername(nomeUtente).orElseThrow();
+
+        //se l'utente è un admin e non corrisponde con l'admin della task
+        if(utente.getRuolo().equals(Ruolo.ADMIN)){
+            if(!task.getAdmin().getId().equals(utente.getId())){
+                throw new IllegalArgumentException("impossibile accedere a questo progetto");
+            }
+        }
+        //se l'utente è un dipendente
+        if(utente.getRuolo().equals(Ruolo.DIPENDENTE)){
+            if(task.getDipendente() == null){
+                throw new IllegalArgumentException("impossibile accedere a questo progetto");
+            }
+            if(!task.getDipendente().getId().equals(utente.getId())){
+                throw new IllegalArgumentException("impossibile accedere a questo progetto");
+            }
+        }
+        DettagliTaskDTO dto =  new DettagliTaskDTO();
+        dto.setTitolo(task.getTitolo());
+        dto.setObiettivo(task.getObiettivo());
+        dto.setDataInizio(task.getDataInizio());
+        dto.setDataFine(task.getDataFine());
+        dto.setAdmin(task.getAdmin());
+        dto.setValidato(task.isValidato());
+        dto.setStatoTask(task.getStatoTask());
+        return dto;
     }
 }
