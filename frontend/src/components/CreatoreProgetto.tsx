@@ -1,32 +1,22 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import api from "../services/api";
 
 const CreatoreProgetto = ({
-  idProgetto,
-  onTaskCreated,
+  onProgettoCreated,
 }: {
-  idProgetto: string;
-  onTaskCreated: () => void;
+  onProgettoCreated: () => void;
 }) => {
-  const [titolo, setTitolo] = useState("");
-  const [obiettivo, setObiettivo] = useState("");
-  const [dataInizio, setDataInizio] = useState("");
-  const [dataFine, setDataFine] = useState("");
+
+  const [nome, setNome] = useState("");
 
   const handleSalva = () => {
     api
       .post(`/api/v1/admin/progetti`, {
-        titolo,
-        obiettivo,
-        dataInizio,
-        dataFine,
+        nome,
       })
       .then(() => {
-        setTitolo("");
-        setObiettivo("");
-        setDataInizio("");
-        setDataFine("");
-        onTaskCreated();
+        setNome("");
+        onProgettoCreated();
       })
       .catch((err) => console.error("Errore creazione Task: ", err));
   };
@@ -36,37 +26,16 @@ const CreatoreProgetto = ({
       <h5> Nuova Task</h5>
       <input
         className="form-control mb-2"
-        placeholder="Titolo"
-        value={titolo}
-        onChange={(e) => setTitolo(e.target.value)}
-      />
-      <input
-        className="form-control mb-2"
-        placeholder="Obiettivo"
-        value={obiettivo}
-        onChange={(e) => setObiettivo(e.target.value)}
+        placeholder="Nome Progetto"
+        value={nome}
+        onChange={(e) => setNome(e.target.value)}
       />
 
-      <div className="row">
-        <div className="col">
-          <input
-            type="date"
-            className="form-control"
-            onChange={(e) => setDataInizio(e.target.value)}
-          />
-        </div>
-        <div className="col">
-          <input
-            type="date"
-            className="form-control"
-            onChange={(e) => setDataFine(e.target.value)}
-          />
-        </div>
-      </div>
+      <div className="row"></div>
       <button className="btn btn-primary mt-3" onClick={handleSalva}>
-        Salva Task
+        Salva Progetto
       </button>
     </div>
   );
 };
-export default CreatoreTask;
+export default CreatoreProgetto;
