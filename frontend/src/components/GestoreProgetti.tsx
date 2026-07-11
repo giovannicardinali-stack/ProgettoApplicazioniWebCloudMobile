@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import DettagliProgetto from "./DettagliProgetto";
 import api from "../services/api";
+import CreatoreProgetto from "./CreatoreProgetto";
 
 interface Progetto {
   id: string;
@@ -10,12 +11,13 @@ interface Progetto {
 const GestoreProgetti = () => {
   const [progetti, setProgetti] = useState<Progetto[]>([]);
   const [loading, setLoading] = useState(true);
+  const [showForm, setShowForm] = useState(false);
 
   const [idProgettoSelezionato, setIdProgettoSelezionato] = useState<
     string | null
   >(null);
 
-  useEffect(() => {
+  const caricaProgetti = () => {
     api
       .get("/api/v1/admin/progetti")
       .then((res) => {
@@ -23,6 +25,10 @@ const GestoreProgetti = () => {
         setLoading(false);
       })
       .catch((err) => console.error("Errore nel recupero dei progetti: ", err));
+  };
+
+  useEffect(() => {
+    caricaProgetti();
   }, []);
 
   if (idProgettoSelezionato !== null) {
@@ -57,6 +63,22 @@ const GestoreProgetti = () => {
           ))}
         </tbody>
       </table>
+
+      <button
+        className="btn btn-primary mb-3"
+        onClick={() => setShowForm(!showForm)}
+      >
+        {showForm ? "Annulla" : "Crea nuovo progetto"}
+      </button>
+
+      {showForm && (
+        <CreatoreProgetto
+          onProgettoCreated={() => {
+            setShowForm(false);
+            caricaProgetti();
+          }}
+        />
+      )}
     </div>
   );
 };

@@ -48,6 +48,7 @@ const ListaTask = ({ idProgetto }: Props) => {
           idProgetto={idProgetto}
           onTaskCreated={() => {
             setShowForm(false);
+            recuperaTask();
           }}
         />
       )}
