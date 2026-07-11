@@ -41,11 +41,11 @@ public class TaskController {
 
     }
 
-    @GetMapping("/progetti/task/{taskId}")
+    @GetMapping("/progetti/task/{idTask}")
     public ResponseEntity<DettagliTaskDTO> visualizzaDettagliTask(
-                                                              @PathVariable UUID taskId,
+                                                              @PathVariable UUID idTask,
                                                               @AuthenticationPrincipal UserDetails utente){
 
-        return ResponseEntity.ok(taskService.visualizzaDettagliTask(taskId, utente.getUsername()));
+        return ResponseEntity.ok(taskService.visualizzaDettagliTask(idTask, utente.getUsername()));
     }
 }
