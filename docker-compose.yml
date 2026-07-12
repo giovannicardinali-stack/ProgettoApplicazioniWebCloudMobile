@@ -1,13 +1,13 @@
-version: '3.8'
+#version: '3.8'
 
 services:
   postgres-db:
     image: postgres:16-alpine
     container_name: postgres_demo_container
     environment:
-      POSTGRES_USER: myuser
-      POSTGRES_PASSWORD: mypassword
-      POSTGRES_DB: demodb
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
     ports:
       - "8432:5432"
     volumes:
@@ -21,6 +21,16 @@ services:
       - "8080:8080"
     depends_on:
       - postgres-db
+
+  frontend:
+    build:
+      context: ./frontend # Metti qui il nome della cartella del tuo progetto React
+      dockerfile: Dockerfile
+    container_name: frontend_demo_container
+    ports:
+      - "3000:80" # Raggiungibile dal tuo browser su http://localhost:3000
+    depends_on:
+      - backend
 
 volumes:
   postgres_data:
