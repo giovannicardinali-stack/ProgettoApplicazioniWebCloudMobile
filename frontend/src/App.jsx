@@ -1,6 +1,8 @@
 import { useState } from "react";
 import DashboardAdmin from "./components/DashboardAdmin";
 import LoginForm from "./components/LoginForm";
+import DashboardDipendente from "./components/DashboardDipendente";
+import api from "./services/api";
 
 function App() {
     const[RuoloUser, setRuoloUser] = useState(() => {
@@ -13,11 +15,20 @@ function App() {
 
     //gestione del logout
     const handleLogout = () => {
-        //rimuove dal local storage token e ruolo
-        localStorage.removeItem("token");
-        localStorage.removeItem("ruolo");
-        //imposta il ruolo dell'utente a null
-        setRuoloUser(null);
+
+        try{
+            await api.post("/api/v1/auth/logout");
+        }
+        catch(error){
+            console.error("Errore durante il logout dal server:", error);
+        }
+        finally{
+            localStorage.removeItem("ruolo");
+            localStorage.removeItem("nomeUtenteLoggato");
+        
+        // 3. Reindirizziamo al login
+        window.location.href = "/login";
+        }
     }
 
     //se il ruolo è null carica la pagina di login
@@ -29,6 +40,11 @@ function App() {
     if(RuoloUser === "ADMIN"){
         console.log("Caricamento Dashboard Admin...");
         return <DashboardAdmin onLogout={handleLogout} />
+    }
+
+    if(RuoloUser ==="DIPENDENTE"){
+        console.log("Caricamento Dashboard Dipendente...");
+        return <DashboardDipendente onLogout={handleLogout}/>
     }
 
     return <div>Ruolo non autorizzato</div>;

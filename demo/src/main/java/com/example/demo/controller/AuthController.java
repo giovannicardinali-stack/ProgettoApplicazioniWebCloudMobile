@@ -31,6 +31,12 @@ public class AuthController {
         return ResponseEntity.ok(userService.registerUser(registerDTO));
     }
 
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout(HttpServletResponse response){
+        String message = userService.Logout(response);
+        return  ResponseEntity.ok(message);
+    }
+
 //    @PostMapping("/test")
 //    public ResponseEntity<?> creaAdmin(){
 //

@@ -66,6 +66,18 @@ public class UserService {
         return JwtUtil.generateToken(user.getUsername(), user.getRuolo().name());
     }
 
+    public String Logout(HttpServletResponse response){
+        // Creiamo un cookie con lo stesso nome del precedente, ma con maxAge 0
+        ResponseCookie cookie = ResponseCookie.from("token", "") // valore vuoto
+                .httpOnly(true)
+                .path("/")
+                .maxAge(0) // <--- Fondamentale: imposta la scadenza a 0 per eliminarlo
+                .build();
+
+        response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
+        return "Logout effettuato correttamente";
+    }
+
     public User creaAdmin(){
         User admin = new User();
         admin.setUsername("admin");
