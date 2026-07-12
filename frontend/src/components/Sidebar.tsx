@@ -31,16 +31,27 @@ const Sidebar = ({ onLogout, adminName, onNavigate }: SidebarProps) => {
             Gestione Progetti
           </button>
         </li>
+
+        <li>
+          <button
+            className="nav-link text-white w-100 text-start"
+            onClick={() => onNavigate("DIPENDENTI")}
+          >
+            Gestione Dipendenti
+          </button>
+        </li>
       </ul>
 
       <hr />
 
       <div className="mt-auto">
-        <p className="small"> Loggato come: <strong> {adminName || "admin"}</strong></p>
+        <p className="small">
+          {" "}
+          Loggato come: <strong> {adminName || "admin"}</strong>
+        </p>
         <button className="btn btn-outline-danger w-100" onClick={onLogout}>
-            Logout
+          Logout
         </button>
-
       </div>
     </nav>
   );

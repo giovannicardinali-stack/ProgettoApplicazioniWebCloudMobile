@@ -1,6 +1,7 @@
-import { useActionState, useState } from "react";
+import {useState } from "react";
 import Sidebar from "./Sidebar";
 import GestoreProgetti from "./GestoreProgetti";
+import GestoreDipendenti from "./GestoreDipendenti";
 
 interface AdminProps {
   onLogout: () => void;
@@ -43,6 +44,13 @@ const DashboardAdmin = ({ onLogout }: AdminProps) => {
           <div>
             <h1> Gestione Progetti</h1>
             <GestoreProgetti />
+          </div>
+        )}
+
+        {vistaCorrente === "DIPENDENTI" && (
+          <div>
+            <h1>Gestione Dipendenti</h1>
+            <GestoreDipendenti />
           </div>
         )}
       </main>

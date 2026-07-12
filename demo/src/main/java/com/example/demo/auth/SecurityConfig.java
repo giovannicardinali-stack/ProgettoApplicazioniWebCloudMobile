@@ -28,8 +28,9 @@ public class SecurityConfig {
                         //PUBLIC ENDPOINTS
                         .requestMatchers("/api/v1/auth/**").permitAll()
 
-                        //ADMIN ONLY
+                        //SOLO ADMIN
                         .requestMatchers("/api/v1/admin/**").hasRole("ADMIN")
+                        //SOLO DIPENDENTI
                         .requestMatchers("/api/v1/dipendente/**").hasRole("DIPENDENTE")
 
                         //ALL OTHER REQUESTS
