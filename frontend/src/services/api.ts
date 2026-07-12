@@ -5,8 +5,10 @@ import axios from "axios";
 //invece di usare axios si usa api...
 const api = axios.create({
     baseURL: '/',
+    withCredentials: true,
 })
 
+{/*
 api.interceptors.request.use((config) => {
     //prende il token dal local storage, in cui era stato salvato al momento del login
     const token = localStorage.getItem('token');
@@ -16,5 +18,6 @@ api.interceptors.request.use((config) => {
     }
     return config;
 })
+    */}
 
 export default api;

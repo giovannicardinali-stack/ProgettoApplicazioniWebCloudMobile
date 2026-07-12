@@ -30,12 +30,12 @@ const LoginForm = ({ onLoginSuccess }: LoginProps) => {
         password,
       });
 
-      const { token, ruolo, nomeUtenteLoggato} = response.data;
+      const {ruolo, nomeUtenteLoggato} = response.data;
 
-      if (token && ruolo) {
-        login(token);
+      if (ruolo) {
         localStorage.setItem("ruolo", ruolo);
         localStorage.setItem("nomeUtenteLoggato", nomeUtenteLoggato);
+        login();
         onLoginSuccess(ruolo);
       } else {
         alert("Impossibile trovare ruolo");

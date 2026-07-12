@@ -42,6 +42,51 @@ public class JwtFilter extends OncePerRequestFilter {
             return;
         }
 
+        String token = null;
+        if (request.getCookies() != null) {
+            for (jakarta.servlet.http.Cookie cookie : request.getCookies()) {
+                if ("token".equals(cookie.getName())) { // Il nome del cookie deve corrispondere a quello che imposti nel login
+                    token = cookie.getValue();
+                }
+            }
+        }
+
+        String username = null;
+        if (token != null) {
+            try {
+                username = JwtUtil.extractUsername(token);
+            } catch (Exception e) {
+                // Token non valido o corrotto
+            }
+        }
+
+        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+            if (!JwtUtil.validateToken(token)) {
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                return;
+            }
+
+            User user = userRepository.findByUsername(username).orElse(null);
+
+            if (user != null) {
+                UserDetails userDetails = new org.springframework.security.core.userdetails.User(
+                        user.getUsername(),
+                        user.getPassword(),
+                        java.util.List.of(new org.springframework.security.core.authority.SimpleGrantedAuthority(
+                                "ROLE_" + user.getRuolo().name())
+                        )
+                );
+
+                UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                SecurityContextHolder.getContext().setAuthentication(auth);
+            }
+        }
+        filterChain.doFilter(request, response);
+
+
+
+        /**
         String authHeader = request.getHeader("Authorization");
 
         String token = null;
@@ -81,5 +126,7 @@ public class JwtFilter extends OncePerRequestFilter {
             }
         }
         filterChain.doFilter(request, response);
+
+         **/
     }
 }
