@@ -14,7 +14,7 @@ function App() {
     }
 
     //gestione del logout
-    const handleLogout = () => {
+    const handleLogout = async () => {
 
         try{
             await api.post("/api/v1/auth/logout");
