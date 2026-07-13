@@ -25,7 +25,7 @@ public class Task {
     private LocalDate dataFine;
     private boolean validato = false;
     private StatoTask statoTask = StatoTask.NONINIZIATO;
-    @OneToOne
+    @ManyToOne
     private User dipendente;
 
 }

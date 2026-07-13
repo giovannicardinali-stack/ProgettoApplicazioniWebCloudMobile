@@ -11,6 +11,14 @@ interface Dipendente {
   username: string;
 }
 
+interface Task{
+  titolo: string;
+  obiettivo: string;
+  nomeDipendente: string;
+  dataInizio: string | null;
+  dataFine: string | null;
+}
+
 const DettagliTask = ({ idTask, onBack }: Props) => {
   const [task, setTask] = useState<any>(null);
   const [dipendenti, setDipendenti] = useState<Dipendente[]>([]);
@@ -29,6 +37,13 @@ const DettagliTask = ({ idTask, onBack }: Props) => {
       })
       .catch((err) => console.error("Errore caricamento dati:", err));
   }, [idTask]);
+
+
+  //funzione per formattare la data
+  const formattaData = (dateString: string | null) => {
+    if(!dateString) return "Non definita";
+    return new Date(dateString).toLocaleDateString("it-IT");
+  }
 
   const assegnaDipendente = async () => {
     if (!dipendenteSelezionato) return;
@@ -64,6 +79,14 @@ const DettagliTask = ({ idTask, onBack }: Props) => {
         <strong>Assegnato a:</strong>{" "}
         {task.nomeDipendente || <span className="text-muted">Nessuno</span>}
       </p>
+      <div className="row mb-3">
+        <div className="col-md-6">
+          <p><strong>Inizio: </strong> {formattaData(task.dataInizio)}</p>
+        </div>
+        <div className="col-md-6">
+          <p><strong>Fine: </strong> {formattaData(task.dataFine)}</p>
+        </div>
+      </div>
 
       {/* Sezione Assegnazione */}
       <div className="mt-4 p-3 border rounded">
