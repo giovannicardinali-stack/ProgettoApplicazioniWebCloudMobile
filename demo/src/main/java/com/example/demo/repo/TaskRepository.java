@@ -14,4 +14,6 @@ public interface TaskRepository extends JpaRepository<Task, UUID> {
     List<Task> findTasksByProgetto(Progetto progetto);
 
     List<Task> findTasksByProgettoAndDipendente(Progetto progetto, User dipendente);
+
+    void removeTasksByDipendente(User dipendente);
 }

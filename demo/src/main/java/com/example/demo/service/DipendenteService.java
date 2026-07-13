@@ -24,7 +24,7 @@ public class DipendenteService {
             DipendenteDTO dto = new DipendenteDTO();
             dto.setId(user.getId());
             dto.setUsername(user.getUsername());
-            dto.setNomeProgetto(user.getProgetto().getNome());
+            dto.setNomeProgetto(user.getProgetto() != null ? user.getProgetto().getNome() : null);
             return dto;
         }).toList();
     }

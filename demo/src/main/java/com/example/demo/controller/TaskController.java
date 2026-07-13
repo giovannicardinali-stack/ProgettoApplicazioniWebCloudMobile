@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @RestController
@@ -47,5 +48,13 @@ public class TaskController {
                                                               @AuthenticationPrincipal UserDetails utente){
 
         return ResponseEntity.ok(taskService.visualizzaDettagliTask(idTask, utente.getUsername()));
+    }
+
+    @PostMapping("/admin/{taskId}/assegna")
+    public ResponseEntity<?> assegnaTask(@PathVariable UUID taskId,
+                                         @RequestBody Map<String, UUID> body){
+        UUID dipendenteId = body.get("dipendenteId");
+        taskService.assegnaTask(taskId, dipendenteId);
+        return ResponseEntity.ok("Dipendente assegnato correttamente alla task");
     }
 }

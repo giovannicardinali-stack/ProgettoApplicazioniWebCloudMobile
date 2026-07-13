@@ -8,6 +8,7 @@ import com.example.demo.entity.User;
 import com.example.demo.repo.ProgettoRepository;
 import com.example.demo.repo.TaskRepository;
 import com.example.demo.repo.UserRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,7 +21,7 @@ public class ProgettoService {
 
     private final UserRepository userRepository;
     private final TaskRepository taskRepository;
-    ProgettoRepository progettoRepository;
+    private final ProgettoRepository progettoRepository;
 
     public ProgettoService(ProgettoRepository progettoRepository, UserRepository userRepository, TaskRepository taskRepository) {
         this.progettoRepository = progettoRepository;
@@ -60,20 +61,46 @@ public class ProgettoService {
         progettoRepository.delete(progetto);
     }
 
+    @Transactional
     public Progetto iscriviDipendente(UUID progettoId, IscriviDipendenteDTO dto, String usernameAdmin){
 
-        User dipendente = userRepository.findByUsername(dto.getUsernameDipendente()).orElseThrow(() -> new RuntimeException("non trovato"));
-        Progetto progetto = progettoRepository.findById(progettoId).orElseThrow(() -> new RuntimeException("non trovato"));
-        if(!progetto.getAdmin().getUsername().equals(usernameAdmin)){
-            throw new IllegalArgumentException("non sei l'admin di questo progetto");
+        User dipendente = userRepository.findById(dto.getDipendenteId())
+                .orElseThrow(() -> new RuntimeException("Dipendente non trovato"));
+
+        Progetto nuovoProgetto = progettoRepository.findById(progettoId)
+                .orElseThrow(() -> new RuntimeException("Progetto non trovato"));
+
+        System.out.println("Admin loggato: " + usernameAdmin);
+        System.out.println("Admin del progetto: " + nuovoProgetto.getAdmin().getUsername());
+
+        // 1. Controllo sicurezza dell'admin
+        if(!nuovoProgetto.getAdmin().getUsername().equals(usernameAdmin)){
+            throw new IllegalArgumentException("Non sei l'admin di questo progetto");
         }
 
-        //questo prende il riferimento alla lista nella classe progetto,
-        //modificandola, si modifica anche quella nella classe
-        List<User> dipendenti = progetto.getDipendenti();
-        dipendenti.add(dipendente);
-        dipendente.setProgetto(progetto);
-        return progetto;
+        // 2. Gestione del cambio progetto se è già assegnato a uno
+        if(dipendente.getProgetto() != null){
+            Progetto vecchioProgetto = dipendente.getProgetto();
+
+            // Se l'utente è già in QUESTO progetto, non fare nulla (evita duplicati)
+            if(vecchioProgetto.getId().equals(progettoId)) {
+                return nuovoProgetto;
+            }
+
+            // Rimuoviamo il dipendente dalla lista in memoria del vecchio progetto (Ottima pratica)
+            vecchioProgetto.getDipendenti().remove(dipendente);
+
+            // Eliminiamo le vecchie task assegnate a lui
+            taskRepository.removeTasksByDipendente(dipendente);
+        }
+
+        // 3. Assegnazione al nuovo progetto
+        nuovoProgetto.getDipendenti().add(dipendente);
+        dipendente.setProgetto(nuovoProgetto);
+
+        // Non serve salvare esplicitamente se c'è @Transactional,
+        // ma restituendo il nuovoProgetto, Spring aggiornerà tutto nel DB a fine metodo.
+        return nuovoProgetto;
     }
 
     public List<ProgettoDTO> visualizzaProgetti(String usernameAdmin){

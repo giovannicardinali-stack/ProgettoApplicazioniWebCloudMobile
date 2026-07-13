@@ -41,9 +41,12 @@ const ListaTask = ({ idProgetto }: Props) => {
     <div>
       {/* Se una task è selezionata mostriamo il dettaglio, altrimenti la lista */}
       {idTaskSelezionata ? (
-        <DettagliTask 
-          idTask={idTaskSelezionata} 
-          onBack={() => setIdTaskSelezionata(null)} 
+        <DettagliTask
+          idTask={idTaskSelezionata}
+          onBack={() => {
+            setIdTaskSelezionata(null);
+            recuperaTask();
+          }}
         />
       ) : (
         <>
@@ -72,8 +75,12 @@ const ListaTask = ({ idProgetto }: Props) => {
                   className="list-group-item"
                   onClick={() => setIdTaskSelezionata(task.id)}
                   style={{ cursor: "pointer" }}
-                  onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#f8f9fa")}
-                  onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "white")}
+                  onMouseEnter={(e) =>
+                    (e.currentTarget.style.backgroundColor = "#f8f9fa")
+                  }
+                  onMouseLeave={(e) =>
+                    (e.currentTarget.style.backgroundColor = "white")
+                  }
                 >
                   <strong>{task.titolo}</strong> - {task.obiettivo}
                 </li>

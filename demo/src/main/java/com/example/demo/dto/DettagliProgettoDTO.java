@@ -15,4 +15,5 @@ public class DettagliProgettoDTO {
     private String nomeProgetto;
     private List<User> dipendenti;
     private List<Task> taskInCorso;
+    private String dipendenteUsername;
 }

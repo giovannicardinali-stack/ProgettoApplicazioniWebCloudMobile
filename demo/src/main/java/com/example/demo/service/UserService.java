@@ -25,7 +25,7 @@ public class UserService {
 
     public LoginResponseDTO loginUser(RegisterDTO dto, HttpServletResponse response) {
 
-        User user = userRepository.findByUsername(dto.getUsername()).orElseThrow(() -> new RuntimeException("utente non trovato"));
+        User user = userRepository.findByUsername(dto.getUsername()).orElseThrow(() -> new RuntimeException("credenziali non valide"));
 
         if(!passwordEncoder.matches(dto.getPassword(), user.getPassword())) {
             throw new RuntimeException("credenziali non valide");

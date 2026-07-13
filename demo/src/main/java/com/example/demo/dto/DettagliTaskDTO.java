@@ -18,4 +18,5 @@ public class DettagliTaskDTO {
     private LocalDate dataFine;
     private boolean validato;
     private StatoTask statoTask;
+    private String nomeDipendente;
 }

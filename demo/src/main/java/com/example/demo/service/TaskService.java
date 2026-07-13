@@ -9,6 +9,7 @@ import com.example.demo.entity.User;
 import com.example.demo.repo.ProgettoRepository;
 import com.example.demo.repo.TaskRepository;
 import com.example.demo.repo.UserRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.nio.file.AccessDeniedException;
@@ -100,6 +101,26 @@ public class TaskService {
         dto.setAdmin(task.getAdmin());
         dto.setValidato(task.isValidato());
         dto.setStatoTask(task.getStatoTask());
+        if (task.getDipendente() != null) {
+            dto.setNomeDipendente(task.getDipendente().getUsername());
+        } else {
+            dto.setNomeDipendente("Nessun dipendente assegnato");
+        }
         return dto;
+    }
+
+    @Transactional
+    public void assegnaTask(UUID taskId, UUID dipendenteId) {
+        Task task = taskRepository.findById(taskId)
+                .orElseThrow(() -> new RuntimeException("Task non trovata"));
+
+        User dipendente = userRepository.findById(dipendenteId)
+                .orElseThrow(() -> new RuntimeException("Dipendente non trovato"));
+
+        // Assegna il dipendente alla task
+        task.setDipendente(dipendente);
+
+        // Salva la modifica
+        taskRepository.save(task);
     }
 }
