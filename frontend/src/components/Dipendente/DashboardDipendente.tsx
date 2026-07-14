@@ -1,38 +1,40 @@
+import { useState } from "react";
 import SidebarDipendente from "./SidebarDipendente";
+import DettagliProgettoDipendente from "./DettagliProgettoDipendente";
 
 interface Props {
   onLogout: () => void;
+  username: string;
 }
 
-const DashboardDipendente = ({ onLogout }: Props) => {
-  // Recuperiamo il nome per personalizzare il saluto
-  const nomeUtente = localStorage.getItem("nomeUtenteLoggato") || "Dipendente";
+const DashboardDipendente = ({ onLogout, username }: Props) => {
+  // Stato per gestire la vista attiva
+  const [vistaCorrente, setVistaCorrente] = useState("HOME");
 
   return (
-    <div className="container mt-5">
-      <div className="card shadow">
-        <div className="card-header bg-primary text-white">
-          <h3 className="mb-0">Dashboard Dipendente</h3>
-        </div>
-        <div className="card-body">
-          <h4>Benvenuto, {nomeUtente}!</h4>
-          <p className="text-muted">Questa è la tua area riservata aziendale.</p>
-          
-          <hr />
-          
-          <div className="alert alert-info">
-            Qui verranno mostrate le funzionalità dedicate ai dipendenti (es. visualizzazione turni, richieste ferie, ecc.).
-          </div>
+    <div className="d-flex">
+      {/* Sidebar fissa a sinistra */}
+      <SidebarDipendente 
+        onLogout={onLogout} 
+        username={username} 
+        onNavigate={(vista) => setVistaCorrente(vista)} 
+      />
 
-          {/* Il click scatena direttamente la funzione handleLogout di App.tsx */}
-          <button 
-            className="btn btn-danger mt-3" 
-            onClick={onLogout}
-          >
-            Disconnetti (Logout)
-          </button>
-        </div>
-      </div>
+      {/* Area contenuti a destra */}
+      <main className="flex-grow-1 p-4">
+        {vistaCorrente === "HOME" && (
+          <div className="card p-4">
+            <h4>Benvenuto, {username}!</h4>
+            <p className="text-muted">Seleziona una sezione dal menu per iniziare.</p>
+          </div>
+        )}
+
+        {vistaCorrente === "PROGETTO" && (
+          <DettagliProgettoDipendente />
+        )}
+        
+        {/*TODO altre viste*/}
+      </main>
     </div>
   );
 };

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/admin/dipendenti")
+@RequestMapping("/api/v1/")
 public class DipendenteController {
     DipendenteService dipendenteService;
 
@@ -20,12 +20,12 @@ public class DipendenteController {
         this.dipendenteService = dipendenteService;
     }
 
-    @GetMapping
+    @GetMapping("/admin/dipendenti")
     public ResponseEntity<List<DipendenteDTO>> visualizzaDipendenti(@AuthenticationPrincipal UserDetails utente){
         return ResponseEntity.ok(dipendenteService.visualizzaDipendenti());
     }
 
-    @GetMapping("/dipendente/progetto")
+    @GetMapping("dipendente/progetto")
     public ResponseEntity<?> visualizzaProgettoDipendente(@AuthenticationPrincipal UserDetails utente){
         return ResponseEntity.ok(dipendenteService.visualizzaProgettoDipendente(utente.getUsername()));
     }
