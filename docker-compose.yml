@@ -34,7 +34,7 @@ services:
       dockerfile: Dockerfile
     container_name: frontend_demo_container
     ports:
-      - "3000:80" # Raggiungibile dal tuo browser su http://localhost:3000
+      - "3000:80" # Raggiungibile dal browser su http://localhost:3000
     depends_on:
       - backend
 
