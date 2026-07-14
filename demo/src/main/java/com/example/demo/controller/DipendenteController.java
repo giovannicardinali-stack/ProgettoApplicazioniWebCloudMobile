@@ -25,4 +25,7 @@ public class DipendenteController {
         return ResponseEntity.ok(dipendenteService.visualizzaDipendenti());
     }
 
+    @GetMapping("/dipendente/progetto")
+    public ResponseEntity<?>
+
 }

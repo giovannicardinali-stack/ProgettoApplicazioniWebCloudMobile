@@ -53,4 +53,7 @@ public class ProgettoController {
                                                                   @AuthenticationPrincipal UserDetails admin){
         return ResponseEntity.ok(progettoService.visualizzaDettagli(progettoId, admin.getUsername()));
     }
+
+
+
 }

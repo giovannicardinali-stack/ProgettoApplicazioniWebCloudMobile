@@ -1,4 +1,4 @@
-
+import SidebarDipendente from "./SidebarDipendente";
 
 interface Props {
   onLogout: () => void;

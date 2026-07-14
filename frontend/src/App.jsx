@@ -1,8 +1,7 @@
 import { useState } from "react";
 import DashboardAdmin from "./components/DashboardAdmin";
 import LoginForm from "./components/LoginForm";
-import DashboardDipendente from "./components/DashboardDipendente";
-import api from "./services/api";
+import DashboardDipendente from "./components/Dipendente/DashboardDipendente";
 
 function App() {
     const[RuoloUser, setRuoloUser] = useState(() => {
