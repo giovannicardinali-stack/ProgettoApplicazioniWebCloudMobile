@@ -11,7 +11,7 @@ const Sidebar = ({ onLogout, adminName, onNavigate }: SidebarProps) => {
       style={{ width: "250px" }}
     >
       <div className="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white">
-        <span className="fs-4"> Admin panel</span>
+        <span className="fs-4">Admin panel</span>
       </div>
 
       <hr />
@@ -21,7 +21,9 @@ const Sidebar = ({ onLogout, adminName, onNavigate }: SidebarProps) => {
           <button
             className="nav-link text-white w-100 text-start"
             onClick={() => onNavigate("HOME")}
-          ></button>
+          >
+            Home
+          </button>
         </li>
         <li>
           <button
@@ -31,7 +33,6 @@ const Sidebar = ({ onLogout, adminName, onNavigate }: SidebarProps) => {
             Gestione Progetti
           </button>
         </li>
-
         <li>
           <button
             className="nav-link text-white w-100 text-start"
@@ -46,8 +47,7 @@ const Sidebar = ({ onLogout, adminName, onNavigate }: SidebarProps) => {
 
       <div className="mt-auto">
         <p className="small">
-          {" "}
-          Loggato come: <strong> {adminName || "admin"}</strong>
+          Loggato come: <strong>{adminName || "admin"}</strong>
         </p>
         <button className="btn btn-outline-danger w-100" onClick={onLogout}>
           Logout

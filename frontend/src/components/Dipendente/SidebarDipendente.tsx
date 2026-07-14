@@ -16,7 +16,15 @@ const SidebarDipendente = ({ onLogout, username, onNavigate }: Props) => {
       <ul className="nav nav-pills flex-column mb-auto">
         <li className="nav-item">
           <button
-            className="nav-link link-dark w-100 text-start" // Cambiato text-white in link-dark
+            className="nav-link link-dark w-100 text-start"
+            onClick={() => onNavigate("HOME")}
+          >
+            Home
+          </button>
+        </li>
+        <li className="nav-item">
+          <button
+            className="nav-link link-dark w-100 text-start"
             onClick={() => onNavigate("PROGETTO")}
           >
             Il mio Progetto
@@ -24,11 +32,16 @@ const SidebarDipendente = ({ onLogout, username, onNavigate }: Props) => {
         </li>
       </ul>
 
-      {/* Aggiungi qui sotto il logout se vuoi che sia visibile */}
       <hr />
-      <button className="btn btn-outline-danger btn-sm" onClick={onLogout}>
-        Logout
-      </button>
+      
+      <div className="mt-auto">
+        <p className="small mb-2 text-muted">
+          Utente: <strong>{username}</strong>
+        </p>
+        <button className="btn btn-outline-danger w-100" onClick={onLogout}>
+          Logout
+        </button>
+      </div>
     </div>
   );
 };
