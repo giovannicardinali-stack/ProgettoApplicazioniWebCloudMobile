@@ -15,4 +15,8 @@ public interface ProgettoRepository extends JpaRepository<Progetto, UUID> {
     Optional<Progetto> findProgettoByNome(String nome);
 
     List<Progetto> findProgettoByAdmin(User admin);
+
+    Progetto findProgettoByDipendenti(List<User> dipendenti);
+
+    Progetto findByDipendentiContaining(User user);
 }

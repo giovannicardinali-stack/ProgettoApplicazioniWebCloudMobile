@@ -26,6 +26,8 @@ public class DipendenteController {
     }
 
     @GetMapping("/dipendente/progetto")
-    public ResponseEntity<?>
+    public ResponseEntity<?> visualizzaProgettoDipendente(@AuthenticationPrincipal UserDetails utente){
+        return ResponseEntity.ok(dipendenteService.visualizzaProgettoDipendente(utente.getUsername()));
+    }
 
 }

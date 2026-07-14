@@ -26,4 +26,8 @@ public class Progetto {
     private List<Task> taskInCorso = new ArrayList<>();
     @OneToMany
     private List<Task> taskTerminate = new ArrayList<>();
+
+    public Progetto orel() {
+        return null;
+    }
 }
