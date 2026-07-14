@@ -12,7 +12,7 @@ const SidebarDipendente = ({ onLogout, username, onNavigate }: Props) => {
     >
       <span className="fs-4 mb-3">Dashboard</span>
       <hr />
-      
+
       <ul className="nav nav-pills flex-column mb-auto">
         <li className="nav-item">
           <button
@@ -30,10 +30,18 @@ const SidebarDipendente = ({ onLogout, username, onNavigate }: Props) => {
             Il mio Progetto
           </button>
         </li>
+        <li className="nav-item">
+          <button
+            className="nav-link link-dark w-100 text-start"
+            onClick={() => onNavigate("TASK")}
+          >
+            Le mie Task
+          </button>
+        </li>
       </ul>
 
       <hr />
-      
+
       <div className="mt-auto">
         <p className="small mb-2 text-muted">
           Utente: <strong>{username}</strong>

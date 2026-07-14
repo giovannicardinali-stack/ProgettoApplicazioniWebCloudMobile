@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.DettagliTaskDTO;
 import com.example.demo.dto.DipendenteDTO;
 import com.example.demo.service.DipendenteService;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +29,11 @@ public class DipendenteController {
     @GetMapping("dipendente/progetto")
     public ResponseEntity<?> visualizzaProgettoDipendente(@AuthenticationPrincipal UserDetails utente){
         return ResponseEntity.ok(dipendenteService.visualizzaProgettoDipendente(utente.getUsername()));
+    }
+
+    @GetMapping("/dipendente/task")
+    public ResponseEntity<List<DettagliTaskDTO>> visualizzaTaskDipendenti(@AuthenticationPrincipal UserDetails utente){
+        return ResponseEntity.ok(dipendenteService.visualizzaTaskDipendenti(utente.getUsername()));
     }
 
 }

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import SidebarDipendente from "./SidebarDipendente";
 import DettagliProgettoDipendente from "./DettagliProgettoDipendente";
+import ElencoTaskDipendente from "./ElencoTaskDipendente";
 
 interface Props {
   onLogout: () => void;
@@ -14,10 +15,10 @@ const DashboardDipendente = ({ onLogout, username }: Props) => {
   return (
     <div className="d-flex">
       {/* Sidebar fissa a sinistra */}
-      <SidebarDipendente 
-        onLogout={onLogout} 
-        username={username} 
-        onNavigate={(vista) => setVistaCorrente(vista)} 
+      <SidebarDipendente
+        onLogout={onLogout}
+        username={username}
+        onNavigate={(vista) => setVistaCorrente(vista)}
       />
 
       {/* Area contenuti a destra */}
@@ -25,14 +26,14 @@ const DashboardDipendente = ({ onLogout, username }: Props) => {
         {vistaCorrente === "HOME" && (
           <div className="card p-4">
             <h4>Benvenuto, {username}!</h4>
-            <p className="text-muted">Seleziona una sezione dal menu per iniziare.</p>
+            <p className="text-muted">
+              Seleziona una sezione dal menu per iniziare.
+            </p>
           </div>
         )}
-
-        {vistaCorrente === "PROGETTO" && (
-          <DettagliProgettoDipendente />
+        {vistaCorrente === "PROGETTO" && <DettagliProgettoDipendente />}
+        {vistaCorrente === "TASK" && (<ElencoTaskDipendente />
         )}
-        
         {/*TODO altre viste*/}
       </main>
     </div>

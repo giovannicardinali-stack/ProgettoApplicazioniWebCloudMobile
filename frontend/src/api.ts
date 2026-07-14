@@ -1,3 +1,4 @@
+/*
 import axios from 'axios';
 
 //configurazione indirizzo
@@ -16,3 +17,4 @@ api.interceptors.request.use((config) => {
 }, (error) => {
     return Promise.reject(error);
 });
+*/

@@ -221,10 +221,12 @@ nav.bg-dark hr {
 }
 
 /* Icone + etichetta HOME mancante (bottone vuoto nel JSX) */
+/*
 .nav-pills li:nth-child(1) .nav-link::before { content: "\1F3E0"; font-size: 1rem; }
 .nav-pills li:nth-child(1) .nav-link::after { content: "Dashboard"; }
 .nav-pills li:nth-child(2) .nav-link::before { content: "\1F4C1"; font-size: 1rem; }
 .nav-pills li:nth-child(3) .nav-link::before { content: "\1F465"; font-size: 1rem; }
+*/
 
 nav.bg-dark .small {
   color: rgba(255, 255, 255, 0.55);
