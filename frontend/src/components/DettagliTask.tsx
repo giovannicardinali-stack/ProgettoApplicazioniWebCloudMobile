@@ -123,8 +123,6 @@ const DettagliTask = ({ idTask, onBack }: Props) => {
           </div>
         )}
       </div>
-
-      {/* TODO: bottone cancellazione */}
     </div>
   );
 };

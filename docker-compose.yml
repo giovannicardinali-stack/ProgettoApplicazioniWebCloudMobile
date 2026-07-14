@@ -20,7 +20,7 @@ services:
     ports:
       - "8080:8080"
     environment:
-      - DB_HOST=postgres-db        #Dentro la rete Docker, l'host è il nome del servizio
+      - DB_HOST=postgres-db        #nome del servizio
       - DB_PORT=5432               #Porta interna del container Postgres
       - DB_NAME=${DB_NAME}         #Prende dal .env
       - DB_USER=${DB_USER}         #Prende dal .env
@@ -30,7 +30,7 @@ services:
 
   frontend:
     build:
-      context: ./frontend # Metti qui il nome della cartella del tuo progetto React
+      context: ./frontend #nome progetto react
       dockerfile: Dockerfile
     container_name: frontend_demo_container
     ports:

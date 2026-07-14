@@ -1,10 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap");
 
-/* =====================================================================
-   Design system — modern clean dashboard
-   Solo CSS. Sovrascrive Bootstrap (caricato prima in main.jsx).
-   ===================================================================== */
-
 :root {
   /* Superfici / sfondo */
   --bg-canvas: #f5f7fb;
@@ -60,7 +55,7 @@
   color-scheme: light;
 }
 
-/* ---------- Base ---------- */
+/*  Base  */
 * {
   box-sizing: border-box;
 }
@@ -124,9 +119,8 @@ a:hover { color: var(--primary-700); }
 
 .text-muted { color: var(--muted) !important; }
 
-/* =====================================================================
-   Login (schermata senza sidebar → sfondo visibile)
-   ===================================================================== */
+   /*Login*/ 
+  
 body {
   background:
     radial-gradient(1200px 600px at 15% -10%, var(--bg-gradient-1), transparent 60%),
@@ -151,9 +145,7 @@ body {
   margin-bottom: 1.5rem !important;
 }
 
-/* =====================================================================
-   Card generiche
-   ===================================================================== */
+   /*Card generiche */
 .card {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -165,9 +157,7 @@ body {
   box-shadow: var(--shadow-md) !important;
 }
 
-/* =====================================================================
-   Sidebar (nav.bg-dark, width 250px inline)
-   ===================================================================== */
+   /*Sidebar (nav.bg-dark, width 250px inline) */
 nav.bg-dark {
   background: linear-gradient(180deg, var(--sidebar-1), var(--sidebar-2)) !important;
   border-right: 1px solid rgba(255, 255, 255, 0.06);
@@ -220,23 +210,14 @@ nav.bg-dark hr {
   transform: translateX(2px) scale(0.99);
 }
 
-/* Icone + etichetta HOME mancante (bottone vuoto nel JSX) */
-/*
-.nav-pills li:nth-child(1) .nav-link::before { content: "\1F3E0"; font-size: 1rem; }
-.nav-pills li:nth-child(1) .nav-link::after { content: "Dashboard"; }
-.nav-pills li:nth-child(2) .nav-link::before { content: "\1F4C1"; font-size: 1rem; }
-.nav-pills li:nth-child(3) .nav-link::before { content: "\1F465"; font-size: 1rem; }
-*/
-
 nav.bg-dark .small {
   color: rgba(255, 255, 255, 0.55);
   font-size: 0.8rem;
 }
 nav.bg-dark .small strong { color: #fff; }
 
-/* =====================================================================
-   Area principale
-   ===================================================================== */
+
+   /* Area principale */
 main.flex-grow-1 {
   background: transparent !important;
   padding: 2.5rem 2.75rem !important;
@@ -268,9 +249,7 @@ main.flex-grow-1 > div > p {
   font-size: 1.15rem;
 }
 
-/* =====================================================================
-   Bottoni
-   ===================================================================== */
+   /*Bottoni*/
 .btn {
   --btn-bg: var(--primary);
   --btn-fg: #fff;
@@ -322,9 +301,8 @@ main.flex-grow-1 > div > p {
   color: #fff !important;
 }
 
-/* =====================================================================
-   Form
-   ===================================================================== */
+   /*Form*/
+   
 .form-label {
   font-weight: 600;
   font-size: 0.78rem;
@@ -352,9 +330,7 @@ main.flex-grow-1 > div > p {
   outline: none;
 }
 
-/* =====================================================================
-   Tabelle
-   ===================================================================== */
+   /*Tabelle*/
 .table {
   --bs-table-bg: transparent;
   border-collapse: separate;
@@ -394,9 +370,7 @@ main.flex-grow-1 > div > p {
 .table tbody tr[style] { cursor: pointer; }
 .table tbody tr[style]:hover td { color: var(--primary-700) !important; }
 
-/* =====================================================================
-   List group (task)
-   ===================================================================== */
+   /*List group (task)*/
 .list-group { border-radius: 0; }
 
 .list-group-item {
@@ -418,17 +392,16 @@ main.flex-grow-1 > div > p {
 .list-group-item.text-muted { color: var(--muted) !important; box-shadow: none; }
 .list-group-item.text-muted:hover { transform: none; background: var(--surface-2) !important; }
 
-/* =====================================================================
-   Dettaglio task / card contenuto
-   ===================================================================== */
+ 
+   /*Dettaglio task / card contenuto*/
+
 .card.p-4 { padding: 1.75rem !important; }
 .card.p-4 h2 { margin-bottom: 1rem; }
 .card.p-4 p { color: var(--text-body); }
 .card.p-4 p strong { color: var(--text); font-weight: 650; }
 
-/* =====================================================================
-   Animazioni
-   ===================================================================== */
+
+   /* Animazioni */
 @keyframes rise {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
@@ -442,7 +415,7 @@ main.flex-grow-1 > div > p {
   * { animation: none !important; transition: none !important; }
 }
 
-/* ---------- Responsive ---------- */
+/* Responsive */
 @media (max-width: 768px) {
   main.flex-grow-1 { padding: 1.5rem 1.1rem !important; }
   h1 { font-size: 1.55rem; }

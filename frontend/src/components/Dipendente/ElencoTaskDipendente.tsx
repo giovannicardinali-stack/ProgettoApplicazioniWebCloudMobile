@@ -4,11 +4,11 @@ import api from "../../services/api";
 // Aggiorniamo l'interfaccia per rispecchiare DettagliTaskDTO del backend
 interface Task {
   titolo: string;
-  obiettivo: string;      // Corrisponde a descrizione
+  obiettivo: string;
   dataInizio: string;
   dataFine: string;
   validato: boolean;
-  statoTask: "APERTO" | "IN_CORSO" | "COMPLETATO"; // Verifica che i valori coincidano
+  statoTask: "APERTO" | "IN_CORSO" | "COMPLETATO";
   nomeDipendente: string;
 }
 
@@ -33,7 +33,6 @@ const ElencoTaskDipendente = () => {
       ) : (
         <div className="row">
           {tasks.map((task, index) => (
-            // Usiamo l'indice come key se non hai un ID univoco nel DTO
             <div key={index} className="col-12 mb-3">
               <div className="card shadow-sm">
                 <div className="card-body">

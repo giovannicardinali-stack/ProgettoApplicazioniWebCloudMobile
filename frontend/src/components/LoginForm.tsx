@@ -17,6 +17,8 @@ const LoginForm = ({ onLoginSuccess }: LoginProps) => {
   //sfrutta la funzione login di authcontext
   const { login } = useAuth();
 
+  const [isRegistering, setIsRegistering] = useState<boolean>(false);
+
   //comportamento attivato al click del button
   const handleLogin = async (e: React.FormEvent) => {
     //evita che il browser ricarichi automaticamente la pagina, lasciando lavorare React (single page application)
@@ -25,20 +27,26 @@ const LoginForm = ({ onLoginSuccess }: LoginProps) => {
     setIsLoading(true);
 
     try {
-      const response = await api.post("/api/v1/auth/login", {
-        username,
-        password,
-      });
-
-      const {ruolo, nomeUtenteLoggato} = response.data;
-
-      if (ruolo) {
-        localStorage.setItem("ruolo", ruolo);
-        localStorage.setItem("nomeUtenteLoggato", nomeUtenteLoggato);
-        login();
-        onLoginSuccess(ruolo);
+      if (isRegistering) {
+        await api.post("/api/v1/auth/register", { username, password });
+        alert("Registrazione completata! Ora puoi effettuare il login.");
+        setIsRegistering(false);
       } else {
-        alert("Impossibile trovare ruolo");
+        const response = await api.post("/api/v1/auth/login", {
+          username,
+          password,
+        });
+
+        const { ruolo, nomeUtenteLoggato } = response.data;
+
+        if (ruolo) {
+          localStorage.setItem("ruolo", ruolo);
+          localStorage.setItem("nomeUtenteLoggato", nomeUtenteLoggato);
+          login();
+          onLoginSuccess(ruolo);
+        } else {
+          alert("Impossibile trovare ruolo");
+        }
       }
     } catch (error) {
       console.error("errore durante il login: ", error);
@@ -53,39 +61,59 @@ const LoginForm = ({ onLoginSuccess }: LoginProps) => {
       <div className="row justify-content-center">
         <div className="col-md-4">
           <div className="card shadow p-4">
-            <h2 className="text-center mb-4"> Login </h2>
+            {/* Titolo dinamico */}
+            <h2 className="text-center mb-4">{isRegistering ? "Registrati" : "Login"}</h2>
+
+            {/* Aggiunta del Group Button */}
+            <div className="btn-group w-100 mb-4" role="group">
+              <button
+                type="button"
+                className={`btn ${!isRegistering ? "btn-primary" : "btn-outline-primary"}`}
+                onClick={() => setIsRegistering(false)}
+              >
+                Login
+              </button>
+              <button
+                type="button"
+                className={`btn ${isRegistering ? "btn-primary" : "btn-outline-primary"}`}
+                onClick={() => setIsRegistering(true)}
+              >
+                Registrati
+              </button>
+            </div>
+
             <form onSubmit={handleLogin}>
               <div className="mb-3">
-                <label className="form-label"> Username </label>
-
-                <input //input username
+                <label className="form-label">Username</label>
+                <input
                   type="text"
                   className="form-control"
                   value={username}
-                  //salva l'username nella variabile
                   onChange={(e) => setUsername(e.target.value)}
                   required
                 />
               </div>
 
               <div className="mb-3">
-                <label className="form-label"> Password </label>
-
-                <input //input password
-                  type="text"
+                <label className="form-label">Password</label>
+                <input
+                  type="password"
                   className="form-control"
                   value={password}
-                  //salva la password nella variabile
                   onChange={(e) => setPassword(e.target.value)}
                   required
                 />
               </div>
-              <button //se isLoading è true, nel bottone sarà scritto accedi, altrimenti, caricamento
+
+              {/* Bottone di submit dinamico */}
+              <button
                 type="submit"
                 className="btn btn-primary w-100"
                 disabled={isLoading}
               >
-                {isLoading ? "Caricamento..." : "Accedi"}
+                {isLoading 
+                  ? "Caricamento..." 
+                  : (isRegistering ? "Registrati" : "Accedi")}
               </button>
             </form>
           </div>

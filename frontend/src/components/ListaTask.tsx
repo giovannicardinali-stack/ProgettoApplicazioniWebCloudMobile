@@ -39,7 +39,7 @@ const ListaTask = ({ idProgetto }: Props) => {
 
   return (
     <div>
-      {/* Se una task è selezionata mostriamo il dettaglio, altrimenti la lista */}
+      {/* Se una task è selezionata mostra il dettaglio, altrimenti la lista */}
       {idTaskSelezionata ? (
         <DettagliTask
           idTask={idTaskSelezionata}
