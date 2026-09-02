@@ -8,7 +8,7 @@ const api = axios.create({
     withCredentials: true,
 })
 
-{/*
+{
 api.interceptors.request.use((config) => {
     //prende il token dal local storage, in cui era stato salvato al momento del login
     const token = localStorage.getItem('token');
@@ -18,6 +18,6 @@ api.interceptors.request.use((config) => {
     }
     return config;
 })
-    */}
+    }
 
 export default api;

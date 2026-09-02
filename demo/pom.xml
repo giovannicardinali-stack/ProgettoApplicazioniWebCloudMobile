@@ -57,20 +57,10 @@
             <optional>true</optional>
         </dependency>
 
-
-<!--        &lt;!&ndash; sqlite-jdbc &ndash;&gt;-->
-<!--        <dependency>-->
-<!--            <groupId>org.xerial</groupId>-->
-<!--            <artifactId>sqlite-jdbc</artifactId>-->
-<!--            <scope>runtime</scope>-->
-<!--        </dependency>-->
-
-
-<!--        &lt;!&ndash; sqlite-dialects &ndash;&gt;-->
-<!--        <dependency>-->
-<!--            <groupId>org.hibernate.orm</groupId>-->
-<!--            <artifactId>hibernate-community-dialects</artifactId>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
 
         <!-- Lombok -->
         <dependency>

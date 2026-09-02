@@ -57,4 +57,10 @@ public class TaskController {
         taskService.assegnaTask(taskId, dipendenteId);
         return ResponseEntity.ok("Dipendente assegnato correttamente alla task");
     }
+
+    @GetMapping("/progetti/{progettoId}/task")
+    public ResponseEntity<List<Task>> visualizzaTasks(@PathVariable UUID progettoId,
+                                                      @AuthenticationPrincipal UserDetails utente){
+        return ResponseEntity.ok(taskService.visualizzaTask(progettoId, utente.getUsername()));
+    }
 }
