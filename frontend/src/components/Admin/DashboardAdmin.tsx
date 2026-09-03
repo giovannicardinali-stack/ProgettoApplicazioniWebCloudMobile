@@ -1,7 +1,7 @@
 import {useState } from "react";
-import Sidebar from "./Sidebar";
-import GestoreProgetti from "./GestoreProgetti";
-import GestoreDipendenti from "./GestoreDipendenti";
+import Sidebar from "../Sidebar";
+import GestoreProgetti from "../Admin/GestoreProgetti";
+import GestoreDipendenti from "../Admin/GestoreDipendenti";
 
 interface AdminProps {
   onLogout: () => void;

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import DettagliProgetto from "./DettagliProgetto";
-import api from "../services/api";
-import CreatoreProgetto from "./CreatoreProgetto";
+import DettagliProgetto from "../Admin/DettagliProgetto.tsx";
+import api from "../../services/api.ts";
+import CreatoreProgetto from "./CreatoreProgetto.tsx";
 
 interface Progetto {
   id: string;

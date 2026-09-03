@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import api from "../services/api";
-import CreatoreTask from "./CreatoreTask";
+import CreatoreTask from "./Admin/CreatoreTask";
 import DettagliTask from "./DettagliTask";
 
 interface Task {
