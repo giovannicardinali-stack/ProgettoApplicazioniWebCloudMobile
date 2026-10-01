@@ -17,10 +17,12 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtUtil jwtUtil;
 
-    public UserService(UserRepository userRepository,  PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository,  PasswordEncoder passwordEncoder,  JwtUtil jwtUtil) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.jwtUtil = jwtUtil;
     }
 
     public LoginResponseDTO loginUser(RegisterDTO dto, HttpServletResponse response) {
@@ -31,14 +33,14 @@ public class UserService {
             throw new RuntimeException("credenziali non valide");
         }
 
-        String token = JwtUtil.generateToken(user.getUsername(), user.getRuolo().name());
+        String token = jwtUtil.generateToken(user.getUsername(), user.getRuolo().name());
 
         //creazione cookie
         ResponseCookie cookie = ResponseCookie.from("token", token)
                 .httpOnly(true)
-                .secure(false)        // Usa 'true' solo se sei in HTTPS
+                .secure(false)        // Usa 'true' solo in HTTPS
                 .path("/")            // Visibile su tutto il sito
-                .maxAge(86400)        // 24 ore
+                .maxAge(86400)  // Durata massima 24 ore
                 .sameSite("Lax")      // Protezione CSRF
                 .build();
         //aggiunge il cookie alla risposta http
@@ -63,15 +65,15 @@ public class UserService {
         user.setPassword(passwordEncoder.encode(registerDTO.getPassword()));
         user.setRuolo(Ruolo.DIPENDENTE);
         userRepository.save(user);
-        return JwtUtil.generateToken(user.getUsername(), user.getRuolo().name());
+        return jwtUtil.generateToken(user.getUsername(), user.getRuolo().name());
     }
 
     public String Logout(HttpServletResponse response){
-        // Creiamo un cookie con lo stesso nome del precedente, ma con maxAge 0
-        ResponseCookie cookie = ResponseCookie.from("token", "") // valore vuoto
+        // Crea un cookie con lo stesso nome del precedente, ma con maxAge 0
+        ResponseCookie cookie = ResponseCookie.from("token", "")
                 .httpOnly(true)
                 .path("/")
-                .maxAge(0) // <--- Fondamentale: imposta la scadenza a 0 per eliminarlo
+                .maxAge(0) //imposta la scadenza a 0 per eliminarlo
                 .build();
 
         response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
