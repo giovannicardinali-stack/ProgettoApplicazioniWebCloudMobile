@@ -20,9 +20,11 @@ import java.io.IOException;
 public class JwtFilter extends OncePerRequestFilter {
 
     private final UserRepository userRepository;
+    private final JwtUtil jwtUtil;
 
-    public JwtFilter(UserRepository userRepository) {
+    public JwtFilter(UserRepository userRepository, JwtUtil jwtUtil) {
         this.userRepository = userRepository;
+        this.jwtUtil = jwtUtil;
     }
 
 //    @Override
@@ -54,14 +56,14 @@ public class JwtFilter extends OncePerRequestFilter {
         String username = null;
         if (token != null) {
             try {
-                username = JwtUtil.extractUsername(token);
+                username = jwtUtil.extractUsername(token);
             } catch (Exception e) {
                 // Token non valido o corrotto
             }
         }
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            if (!JwtUtil.validateToken(token)) {
+            if (!jwtUtil.validateToken(token)) {
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 return;
             }
@@ -83,50 +85,5 @@ public class JwtFilter extends OncePerRequestFilter {
             }
         }
         filterChain.doFilter(request, response);
-
-
-
-        /**
-        String authHeader = request.getHeader("Authorization");
-
-        String token = null;
-        String username = null;
-
-        //controlla gli header
-        if (authHeader != null && authHeader.startsWith("Bearer ")) {
-            token = authHeader.substring(7);
-            username = JwtUtil.extractUsername(token);
-        }
-
-        if(username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            if(!JwtUtil.validateToken(token)) {
-                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                return;
-            }
-
-            User user = userRepository.findByUsername(username).orElse(null);
-
-            if(user != null) {
-                UserDetails userDetails = new org.springframework.security.core.userdetails.User(
-                        user.getUsername(),
-                        user.getPassword(),
-                        java.util.List.of(new org.springframework.security.core.authority.SimpleGrantedAuthority(
-                                "ROLE_" + user.getRuolo().name())
-                        )
-                );
-
-                UsernamePasswordAuthenticationToken auth =  new UsernamePasswordAuthenticationToken(userDetails
-                        , null
-                        , userDetails.getAuthorities()
-                );
-
-                auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-
-                SecurityContextHolder.getContext().setAuthentication(auth);
-            }
-        }
-        filterChain.doFilter(request, response);
-
-         **/
     }
 }

@@ -26,7 +26,7 @@ public class JwtUtil {
 
     //Genera token e ne specifica la data di creazione e di scadenza. Inoltre lo firma
     //la chiave segreta
-    public static String generateToken(String username, String ruolo) {
+    public String generateToken(String username, String ruolo) {
         return Jwts.builder()
                 .setSubject(username)
                 .claim("role", ruolo)

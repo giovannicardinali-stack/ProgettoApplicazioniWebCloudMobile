@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import api from "../../services/api";
+import { GanttView } from "../GanttView";
 
 interface Progetto {
   id: string;
@@ -38,28 +39,33 @@ const DettagliProgettoDipendente = () => {
   }
 
   return (
-    <div className="card p-4 shadow-sm">
-      <h2 className="mb-3 text-primary">{progetto.nomeProgetto}</h2>
+    
+    <div className="d-flex flex-column gap-4">
+      <div className="card p-4 shadow-sm">
+        <h2 className="mb-3 text-primary">{progetto.nomeProgetto}</h2>
 
-      <div className="mb-3">
-        <strong>Gestito da:</strong> {progetto.admin?.username || "N/D"}
+        <div className="mb-3">
+          <strong>Gestito da:</strong> {progetto.admin?.username || "N/D"}
+        </div>
+
+        <div className="mb-3">
+          <strong>Team assegnato:</strong>
+          {progetto.dipendenti && progetto.dipendenti.length > 0 ? (
+            <ul className="mt-2">
+              {progetto.dipendenti.map((d, index) => (
+                <li key={index}>{d.username}</li>
+              ))}
+            </ul>
+          ) : (
+            <p className="text-muted">Nessun altro dipendente assegnato.</p>
+          )}
+        </div>
       </div>
-
-      <div className="mb-3">
-        <strong>Team assegnato:</strong>
-        {progetto.dipendenti && progetto.dipendenti.length > 0 ? (
-          <ul className="mt-2">
-            {progetto.dipendenti.map((d, index) => (
-              <li key={index}>{d.username}</li>
-            ))}
-          </ul>
-        ) : (
-          <p className="text-muted">Nessun altro dipendente assegnato.</p>
-        )}
+      <div className="card p-4 shadow-sm">
+        <GanttView projectId={progetto.id} />
       </div>
     </div>
   );
 };
-
 
 export default DettagliProgettoDipendente;

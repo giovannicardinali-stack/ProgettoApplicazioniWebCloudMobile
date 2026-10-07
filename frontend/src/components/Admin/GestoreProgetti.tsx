@@ -32,13 +32,15 @@ const GestoreProgetti = () => {
   }, []);
 
   if (idProgettoSelezionato !== null) {
-    return (
+  return (
+    <div className="container mt-4" style={{ minWidth: 0, overflow: "hidden" }}>
       <DettagliProgetto
         idProgetto={idProgettoSelezionato}
         onBack={() => setIdProgettoSelezionato(null)}
       />
-    );
-  }
+    </div>
+  );
+}
 
   return (
     <div className="container mt-4">
