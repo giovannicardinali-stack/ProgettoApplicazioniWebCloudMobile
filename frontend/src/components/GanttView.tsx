@@ -25,8 +25,8 @@ export const GanttView: React.FC<ProjectGanttProps> = ({ projectId }) => {
     const ruolo = localStorage.getItem("ruolo");
     const endpoint =
       ruolo === "ADMIN"
-        ? `/api/v1/admin/progetti/${projectId}/task`
-        : `/api/v1/dipendente/progetti/${projectId}/task`;
+        ? `/api/v1/admin/progetti/${projectId}/tasks`
+        : `/api/v1/dipendente/progetti/${projectId}/tasks`;
 
     api
       .get(endpoint)

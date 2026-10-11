@@ -71,11 +71,7 @@ public class DipendenteService {
             dto.setDataFine(task.getDataFine());
             dto.setValidato(task.isValidato());
             dto.setStatoTask(task.getStatoTask());
-
-            // Se l'entità Task ha una relazione con l'admin (es. task.getAdmin())
-            dto.setAdmin(task.getAdmin());
-
-            // Imposta il nome del dipendente (preso direttamente dall'entità dipendente)
+            dto.setNomeAdmin(task.getAdmin().getUsername());
             dto.setNomeDipendente(dipendente.getUsername());
 
             return dto;

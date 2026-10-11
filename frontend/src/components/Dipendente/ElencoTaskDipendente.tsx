@@ -17,7 +17,7 @@ const ElencoTaskDipendente = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    api.get("/api/v1/dipendente/task")
+    api.get("/api/v1/dipendente/tasks")
       .then((res) => setTasks(res.data))
       .catch((err) => console.error("Errore nel recupero task:", err))
       .finally(() => setLoading(false));

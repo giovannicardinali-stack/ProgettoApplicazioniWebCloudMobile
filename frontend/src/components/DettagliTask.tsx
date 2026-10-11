@@ -26,9 +26,9 @@ const DettagliTask = ({ idTask, onBack }: Props) => {
   const [dipendenteSelezionato, setDipendenteSelezionato] = useState("");
 
   useEffect(() => {
-    // Carichiamo task e lista dipendenti in parallelo
+    // Carica task e lista dipendenti in parallelo
     Promise.all([
-      api.get(`/api/v1/progetti/task/${idTask}`),
+      api.get(`/api/v1/progetti/tasks/${idTask}`),
       api.get(`/api/v1/admin/dipendenti`),
     ])
       .then(([resTask, resDip]) => {
@@ -49,19 +49,33 @@ const DettagliTask = ({ idTask, onBack }: Props) => {
     if (!dipendenteSelezionato) return;
 
     try {
-      await api.post(`/api/v1/admin/${idTask}/assegna`, {
+      await api.put(`/api/v1/admin/tasks/${idTask}/assegna`, {
         dipendenteId: dipendenteSelezionato,
       });
       alert("Dipendente assegnato con successo!");
       setShowAssign(false);
       //ricarica task per aggiornare l'UI
-      const res = await api.get(`/api/v1/progetti/task/${idTask}`);
+      const res = await api.get(`/api/v1/progetti/tasks/${idTask}`);
       setTask(res.data);
     } catch (err) {
       console.error("Errore assegnazione:", err);
       alert("Errore nell'assegnazione.");
     }
   };
+
+  const validaTask = async () => {
+    try{
+      await api.put(`/api/v1/admin/tasks/${idTask}/convalida`);
+      alert("taks validata con successo!");
+      setShowAssign(false);
+      //ricarica task per aggiornare l'UI
+      const res = await api.get(`/api/v1/progetti/tasks/${idTask}`);
+      setTask(res.data);
+    } catch (err){
+      console.error("Errore validazione:", err);
+      alert("Errore nella validazione della task.");
+    }
+  }
 
   if (!task) return <div> Caricamento task...</div>;
 
@@ -122,6 +136,11 @@ const DettagliTask = ({ idTask, onBack }: Props) => {
             </button>
           </div>
         )}
+      </div>
+      <div className="mt-4 p-3 border rounded">
+        <button className="btn btn-success" onClick={validaTask}>
+          Valida task
+        </button>
       </div>
     </div>
   );

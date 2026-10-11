@@ -24,7 +24,7 @@ const ListaTask = ({ idProgetto }: Props) => {
 
   const recuperaTask = () => {
     api
-      .get(`/api/v1/admin/progetti/${idProgetto}/task`)
+      .get(`/api/v1/admin/progetti/${idProgetto}/tasks`)
       .then((res) => {
         console.log("Dati ricevuti:", res.data);
         setTasks(res.data);

@@ -15,7 +15,7 @@ const CreatoreTask = ({
 
   const handleSalva = () => {
     api
-      .post(`/api/v1/admin/progetti/${idProgetto}/task`, {
+      .post(`/api/v1/admin/progetti/${idProgetto}/tasks`, {
         titolo,
         obiettivo,
         dataInizio,

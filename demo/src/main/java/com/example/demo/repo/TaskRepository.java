@@ -19,11 +19,12 @@ public interface TaskRepository extends JpaRepository<Task, UUID> {
 
     void removeTasksByDipendente(User dipendente);
 
-    // Trova task non ancora iniziati la cui data di inizio è oggi o nel passato
-    List<Task> findByStatoAndDataInizioLessThanEqual(StatoTask stato, LocalDate data);
+    // Trova i task non iniziati da avviare
+    List<Task> findByStatoTaskAndDataInizioLessThanEqual(StatoTask statoTask, LocalDate data);
 
-    // Trova i task in corso la cui data di fine è precedente ad oggi (scaduti)
-    List<Task> findByStatoAndDataFineBefore(StatoTask stato, LocalDate data);
+    // Trova i task in corso che hanno superato la data fine ma non sono convalidati
+    List<Task> findByStatoTaskAndValidatoFalseAndDataFineBefore(StatoTask statoTask, LocalDate data);
 
-
+    // Trova i task da archiviare (vecchi di 30 giorni)
+    List<Task> findByStatoTaskNotAndDataFineBefore(StatoTask statoEscluso, LocalDate dataLimite);
 }

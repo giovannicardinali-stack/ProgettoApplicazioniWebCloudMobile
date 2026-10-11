@@ -31,7 +31,7 @@ public class DipendenteController {
         return ResponseEntity.ok(dipendenteService.visualizzaProgettoDipendente(utente.getUsername()));
     }
 
-    @GetMapping("/dipendente/task")
+    @GetMapping("/dipendente/tasks")
     public ResponseEntity<List<DettagliTaskDTO>> visualizzaTaskDipendenti(@AuthenticationPrincipal UserDetails utente){
         return ResponseEntity.ok(dipendenteService.visualizzaTaskDipendenti(utente.getUsername()));
     }

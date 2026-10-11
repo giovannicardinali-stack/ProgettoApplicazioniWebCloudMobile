@@ -23,17 +23,22 @@ public class TaskSchedulerService {
     @Scheduled(cron = "0 0 0 * * ?")
     @Transactional
     public void aggiornaStatiTask(){
-        LocalDate now = LocalDate.now();
+        LocalDate oggi = LocalDate.now();
 
-        List<Task> taskDaIniziare = taskRepository.findByStatoAndDataInizioLessThanEqual(StatoTask.NONINIZIATO, now);
-
+        List<Task> taskDaIniziare = taskRepository.findByStatoTaskAndDataInizioLessThanEqual(StatoTask.NONINIZIATO, oggi);
         for(Task task : taskDaIniziare){
             task.setStatoTask(StatoTask.INCORSO);
         }
 
-        List<Task> taskTerminate = taskRepository.findByStatoAndDataFineBefore(StatoTask.INCORSO, now);
-        for (Task task : taskTerminate){
-            task.setStatoTask(StatoTask.TERMINATO);
+        List<Task> taskInRitardo = taskRepository.findByStatoTaskAndValidatoFalseAndDataFineBefore(StatoTask.INCORSO, oggi);
+        for (Task task : taskInRitardo) {
+            task.setStatoTask(StatoTask.INRITARDO);
+        }
+
+        LocalDate limiteArchiviazione = oggi.minusDays(30);
+        List<Task> taskDaArchiviare = taskRepository.findByStatoTaskNotAndDataFineBefore(StatoTask.ARCHIVIATO, limiteArchiviazione);
+        for (Task task : taskDaArchiviare) {
+            task.setStatoTask(StatoTask.ARCHIVIATO);
         }
     }
 }
