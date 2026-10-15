@@ -42,9 +42,9 @@ public class AuthController {
         return  ResponseEntity.ok(message);
     }
 
-    @PostMapping("/test")
-    public ResponseEntity<?> creaAdmin(){
-
-        return ResponseEntity.ok(userService.creaAdmin());
-    }
+//    @PostMapping("/test")
+//    public ResponseEntity<?> creaAdmin(){
+//
+//        return ResponseEntity.ok(userService.creaAdmin());
+//    }626
 }

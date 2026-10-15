@@ -2,12 +2,12 @@ import axios from "axios";
 
 //serve ad evitare di ricavare il token manualmente ad ogni richiesta
 
-//invece di usare axios si usa api...
 const api = axios.create({
     baseURL: '/',
     withCredentials: true,
 })
 
+//funzione per recuperare il token dallo storage
 {
 api.interceptors.request.use((config) => {
     //prende il token dal local storage, in cui era stato salvato al momento del login

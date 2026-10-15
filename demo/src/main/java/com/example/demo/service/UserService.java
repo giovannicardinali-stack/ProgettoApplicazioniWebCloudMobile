@@ -6,6 +6,7 @@ import com.example.demo.entity.Ruolo;
 import com.example.demo.entity.User;
 import com.example.demo.repo.UserRepository;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -23,6 +24,11 @@ public class UserService {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtUtil = jwtUtil;
+    }
+
+    @Cacheable(value = "users", key = "#username")
+    public User findByUsername(String username) {
+
     }
 
     public LoginResponseDTO loginUser(RegisterDTO dto, HttpServletResponse response) {
