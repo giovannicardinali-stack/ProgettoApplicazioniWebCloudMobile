@@ -6,6 +6,7 @@ import com.example.demo.entity.Ruolo;
 import com.example.demo.entity.User;
 import com.example.demo.repo.UserRepository;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
@@ -26,14 +27,19 @@ public class UserService {
         this.jwtUtil = jwtUtil;
     }
 
+    //metodo per redis
+    // Se l'utente è su Redis, lo restituisce subito, altrimenti interroga il db e lo salva su redis.
     @Cacheable(value = "users", key = "#username")
     public User findByUsername(String username) {
-
+        return userRepository.findByUsername(username).orElse(null);
     }
 
     public LoginResponseDTO loginUser(RegisterDTO dto, HttpServletResponse response) {
 
-        User user = userRepository.findByUsername(dto.getUsername()).orElseThrow(() -> new RuntimeException("credenziali non valide"));
+        User user = findByUsername(dto.getUsername());
+        if(user == null){
+            throw new RuntimeException("credenziali non valide");
+        }
 
         if(!passwordEncoder.matches(dto.getPassword(), user.getPassword())) {
             throw new RuntimeException("credenziali non valide");
@@ -58,6 +64,8 @@ public class UserService {
         return dtoresponse;
     }
 
+    // annotazione per pulire l'eventuale voce in cache ed evitare discrepanze
+    @CacheEvict(value = "users", key = "#registerDTO.username")
     public String registerUser(RegisterDTO registerDTO){
         if(registerDTO.getUsername() == null || registerDTO.getPassword() == null) {
             throw new RuntimeException("credenziali non valide");
@@ -86,6 +94,7 @@ public class UserService {
         return "Logout effettuato correttamente";
     }
 
+    @CacheEvict(value = "users", key = "'admin'")
     public User creaAdmin(){
         User admin = new User();
         admin.setUsername("admin");

@@ -3,6 +3,7 @@ package com.example.demo.auth;
 import com.example.demo.entity.User;
 import com.example.demo.repo.UserRepository;
 import com.example.demo.service.JwtUtil;
+import com.example.demo.service.UserService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,12 +20,12 @@ import java.io.IOException;
 @Component
 public class JwtFilter extends OncePerRequestFilter {
 
-    private final UserRepository userRepository;
     private final JwtUtil jwtUtil;
+    private final UserService userService;
 
-    public JwtFilter(UserRepository userRepository, JwtUtil jwtUtil) {
-        this.userRepository = userRepository;
+    public JwtFilter(JwtUtil jwtUtil, UserService userService) {
         this.jwtUtil = jwtUtil;
+        this.userService = userService;
     }
 
     @Override
@@ -62,7 +63,7 @@ public class JwtFilter extends OncePerRequestFilter {
                 return;
             }
 
-            User user = userRepository.findByUsername(username).orElse(null);
+            User user = userService.findByUsername(username);
 
             if (user != null) {
                 UserDetails userDetails = new org.springframework.security.core.userdetails.User(
