@@ -34,11 +34,16 @@ export const GanttView: React.FC<ProjectGanttProps> = ({ projectId }) => {
         const raw = Array.isArray(response.data) ? response.data : [];
         const formattedTasks: Task[] = [];
 
-        for (const t of raw) {
-          if (!t) continue;
+        for (const task of raw) {
+          if (!task) continue;
 
-          const startStr = t.dataInizio || t.data_inizio;
-          const endStr = t.dataFine || t.data_fine;
+          const stato = task.statoTask;
+          if(stato === "ARCHIVIATO"){
+            continue;
+          }
+
+          const startStr = task.dataInizio || task.data_inizio;
+          const endStr = task.dataFine || task.data_fine;
 
           if (!startStr || !endStr) continue;
 
@@ -53,14 +58,28 @@ export const GanttView: React.FC<ProjectGanttProps> = ({ projectId }) => {
             endDate = new Date(startDate.getTime() + 60 * 60 * 1000);
           }
 
+          // colori dinamici basati sugli stati esatti dell'enum
+          let barColor = "#ffc107"; // Giallo (NONINIZIATO)
+          if (stato === "TERMINATO") {
+            barColor = "#198754"; // Verde (Terminato e Approvato)
+          } else if (stato === "INCORSO") {
+            barColor = "#0d6efd"; // Blu (In corso)
+          } else if (stato === "INRITARDO") {
+            barColor = "#dc3545"; // Rosso (In ritardo)
+          }
+
           formattedTasks.push({
-            id: t.id ? t.id.toString() : Math.random().toString(),
-            name: t.titolo || t.nome || "Task senza titolo",
+            id: task.id ? task.id.toString() : Math.random().toString(),
+            name: task.titolo || task.nome || "Task senza titolo",
             start: startDate,
             end: endDate,
             type: "task",
-            progress: t.statoTask === "COMPLETATO" ? 100 : 50,
+            progress: 0,
             isDisabled: true,
+            styles: {
+              backgroundColor: barColor,
+              backgroundSelectedColor: barColor,
+            },
           });
         }
 
@@ -97,29 +116,29 @@ export const GanttView: React.FC<ProjectGanttProps> = ({ projectId }) => {
   }
 
   return (
-  <div style={{ width: "100%", overflow: "hidden" }}>
-    <h4 className="mb-3">Cronologia Progetto</h4>
+    <div style={{ width: "100%", overflow: "hidden" }}>
+      <h4 className="mb-3">Cronologia Progetto</h4>
 
-    {/* Finestra di scorrimento interna */}
-    <div
-      style={{
-        width: "100%",
-        overflowX: "auto",
-        border: "1px solid #dee2e6",
-        borderRadius: "0.375rem",
-      }}
-    >
-      <div style={{ minWidth: "1000px" }}>
-        <Gantt
-          tasks={tasks}
-          viewMode={ViewMode.Day}
-          locale="it"
-          ganttHeight={300}
-          columnWidth={60}
-          listCellWidth="110px"
-        />
+      {/* Finestra di scorrimento interna */}
+      <div
+        style={{
+          width: "100%",
+          overflowX: "auto",
+          border: "1px solid #dee2e6",
+          borderRadius: "0.375rem",
+        }}
+      >
+        <div style={{ minWidth: "1000px" }}>
+          <Gantt
+            tasks={tasks}
+            viewMode={ViewMode.Day}
+            locale="it"
+            ganttHeight={300}
+            columnWidth={60}
+            listCellWidth="110px"
+          />
+        </div>
       </div>
     </div>
-  </div>
-);
+  );
 };
