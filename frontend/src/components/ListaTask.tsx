@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import api from "../services/api";
-import CreatoreTask from "./CreatoreTask";
+import CreatoreTask from "./Admin/CreatoreTask";
 import DettagliTask from "./DettagliTask";
 
 interface Task {
@@ -24,7 +24,7 @@ const ListaTask = ({ idProgetto }: Props) => {
 
   const recuperaTask = () => {
     api
-      .get(`/api/v1/admin/progetti/${idProgetto}/task`)
+      .get(`/api/v1/admin/progetti/${idProgetto}/tasks`)
       .then((res) => {
         console.log("Dati ricevuti:", res.data);
         setTasks(res.data);

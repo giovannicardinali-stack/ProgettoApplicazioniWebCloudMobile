@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import api from "../services/api";
+import api from "../../services/api";
 
 const CreatoreTask = ({
   idProgetto,
@@ -15,7 +15,7 @@ const CreatoreTask = ({
 
   const handleSalva = () => {
     api
-      .post(`/api/v1/admin/progetti/${idProgetto}/task`, {
+      .post(`/api/v1/admin/progetti/${idProgetto}/tasks`, {
         titolo,
         obiettivo,
         dataInizio,

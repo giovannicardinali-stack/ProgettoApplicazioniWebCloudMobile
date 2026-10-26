@@ -2,10 +2,8 @@ package com.example.demo.service;
 
 import com.example.demo.dto.CreaTaskDTO;
 import com.example.demo.dto.DettagliTaskDTO;
-import com.example.demo.entity.Progetto;
-import com.example.demo.entity.Ruolo;
-import com.example.demo.entity.Task;
-import com.example.demo.entity.User;
+import com.example.demo.dto.TaskDTO;
+import com.example.demo.entity.*;
 import com.example.demo.repo.ProgettoRepository;
 import com.example.demo.repo.TaskRepository;
 import com.example.demo.repo.UserRepository;
@@ -13,6 +11,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.nio.file.AccessDeniedException;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -42,6 +41,7 @@ public class TaskService {
             throw new AccessDeniedException("solo l'admin di questo progetto può creare task");
         }
         Task task = new Task();
+        task.setStatoTask(StatoTask.NONINIZIATO);
         task.setTitolo(creaTaskDTO.getTitolo());
         task.setAdmin(admin);
         task.setObiettivo(creaTaskDTO.getObiettivo());
@@ -53,17 +53,21 @@ public class TaskService {
         return task.getId();
     }
 
-    public List<Task> visualizzaTask(UUID progettoId, String usernameAdmin){
+    public List<TaskDTO> visualizzaTask(UUID progettoId, String usernameAdmin){
 
         Progetto p = progettoRepository.findById(progettoId).orElseThrow();
         if(!p.getAdmin().getUsername().equals(usernameAdmin)) {
             throw new IllegalArgumentException("impossibile accedere a questo progetto");
         }
 
-        return taskRepository.findTasksByProgetto(p);
+        List<Task> tasks = taskRepository.findTasksByProgetto(p);
+
+        return tasks.stream()
+                .map(this::mapToDto)
+                .toList();
     }
 
-    public List<Task> visualizzaTaskDIpendente(UUID progettoId, String usernameDipendente){
+    public List<TaskDTO> visualizzaTaskDipendente(UUID progettoId, String usernameDipendente){
 
         Progetto progetto =  progettoRepository.findById(progettoId).orElseThrow();
         User dipendente = userRepository.findByUsername(usernameDipendente).orElseThrow();
@@ -71,42 +75,68 @@ public class TaskService {
             throw new IllegalArgumentException("impossibile accedere a questo progetto");
         }
 
-        return taskRepository.findTasksByProgettoAndDipendente(progetto, dipendente);
+        List<Task> tasks = taskRepository.findTasksByProgettoAndDipendente(progetto, dipendente);
+
+        return tasks.stream()
+                .map(this::mapToDto)
+                .toList();
     }
 
     public DettagliTaskDTO visualizzaDettagliTask(UUID taskId, String nomeUtente){
-        Task task = taskRepository.findById(taskId).orElseThrow();
-        User utente = userRepository.findByUsername(nomeUtente).orElseThrow();
+        Task task = taskRepository.findById(taskId)
+                .orElseThrow(() -> new RuntimeException("Task non trovata con ID: " + taskId));
 
-        //se l'utente è un admin e non corrisponde con l'admin della task
-        if(utente.getRuolo().equals(Ruolo.ADMIN)){
-            if(!task.getAdmin().getId().equals(utente.getId())){
-                throw new IllegalArgumentException("impossibile accedere a questo progetto");
+        User utente = userRepository.findByUsername(nomeUtente)
+                .orElseThrow(() -> new RuntimeException("Utente non trovato: " + nomeUtente));
+
+        if (utente.getRuolo().equals(Ruolo.ADMIN)) {
+            if (task.getAdmin() == null || !task.getAdmin().getId().equals(utente.getId())) {
+                throw new IllegalArgumentException("Impossibile accedere a questa task");
             }
         }
-        //se l'utente è un dipendente
-        if(utente.getRuolo().equals(Ruolo.DIPENDENTE)){
-            if(task.getDipendente() == null){
-                throw new IllegalArgumentException("impossibile accedere a questo progetto");
-            }
-            if(!task.getDipendente().getId().equals(utente.getId())){
-                throw new IllegalArgumentException("impossibile accedere a questo progetto");
+
+        if (utente.getRuolo().equals(Ruolo.DIPENDENTE)) {
+            if (task.getDipendente() == null || !task.getDipendente().getId().equals(utente.getId())) {
+                throw new IllegalArgumentException("Impossibile accedere a questa task");
             }
         }
-        DettagliTaskDTO dto =  new DettagliTaskDTO();
+
+        DettagliTaskDTO dto = new DettagliTaskDTO();
         dto.setTitolo(task.getTitolo());
         dto.setObiettivo(task.getObiettivo());
         dto.setDataInizio(task.getDataInizio());
         dto.setDataFine(task.getDataFine());
-        dto.setAdmin(task.getAdmin());
         dto.setValidato(task.isValidato());
         dto.setStatoTask(task.getStatoTask());
+
+        if (task.getAdmin() != null) {
+            dto.setNomeAdmin(task.getAdmin().getUsername());
+        }
+
         if (task.getDipendente() != null) {
             dto.setNomeDipendente(task.getDipendente().getUsername());
         } else {
             dto.setNomeDipendente("Nessun dipendente assegnato");
         }
+
         return dto;
+    }
+
+    public TaskDTO convalidaTask(UUID taskId){
+        Task task = taskRepository.findById(taskId)
+                .orElseThrow(() -> new RuntimeException("Task non trovata con ID: " + taskId));
+
+        task.setValidato(true);
+
+        LocalDate limiteArchiviazione = LocalDate.now().minusDays(30);
+        if (task.getDataFine() != null && task.getDataFine().isBefore(limiteArchiviazione)) {
+            task.setStatoTask(StatoTask.ARCHIVIATO);
+        } else {
+            task.setStatoTask(StatoTask.TERMINATO);
+        }
+
+        Task taskSalvata = taskRepository.save(task);
+        return mapToDto(taskSalvata);
     }
 
     @Transactional
@@ -117,10 +147,28 @@ public class TaskService {
         User dipendente = userRepository.findById(dipendenteId)
                 .orElseThrow(() -> new RuntimeException("Dipendente non trovato"));
 
-        // Assegna il dipendente alla task
         task.setDipendente(dipendente);
 
-        // Salva la modifica
         taskRepository.save(task);
+    }
+
+    private TaskDTO mapToDto(Task task){
+        TaskDTO dto = new TaskDTO();
+        dto.setId(task.getId());
+        dto.setTitolo(task.getTitolo());
+        dto.setObiettivo(task.getObiettivo());
+        dto.setDataInizio(task.getDataInizio());
+        dto.setDataFine(task.getDataFine());
+        dto.setValidato(task.isValidato());
+        dto.setStatoTask(task.getStatoTask());
+
+        if (task.getAdmin() != null) {
+            dto.setNomeAdmin(task.getAdmin().getUsername());
+        }
+        if (task.getDipendente() != null) {
+            dto.setNomeDipendente(task.getDipendente().getUsername());
+        }
+
+        return dto;
     }
 }

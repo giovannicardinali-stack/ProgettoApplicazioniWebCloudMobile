@@ -1,7 +1,7 @@
 import {useState } from "react";
-import Sidebar from "./Sidebar";
-import GestoreProgetti from "./GestoreProgetti";
-import GestoreDipendenti from "./GestoreDipendenti";
+import Sidebar from "../Sidebar";
+import GestoreProgetti from "../Admin/GestoreProgetti";
+import GestoreDipendenti from "../Admin/GestoreDipendenti";
 
 interface AdminProps {
   onLogout: () => void;
@@ -31,7 +31,11 @@ const DashboardAdmin = ({ onLogout }: AdminProps) => {
 
       <main
         className="flex-grow-1 p-5"
-        style={{ backgroundColor: "#f8f9fa", minHeight: "100vh" }}
+        style={{ backgroundColor: "#f8f9fa",
+          minHeight: "100vh"
+          ,minWidth: 0, // <-- FONDAMENTALE: blocca l'espansione Flexbox
+          overflowX: "hidden", // <-- Blocca l'overflow della pagina
+          }}
       >
         {vistaCorrente === "HOME" && (
           <div>

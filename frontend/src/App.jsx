@@ -1,5 +1,5 @@
 import { useState } from "react";
-import DashboardAdmin from "./components/DashboardAdmin";
+import DashboardAdmin from "./components/Admin/DashboardAdmin";
 import LoginForm from "./components/LoginForm";
 import DashboardDipendente from "./components/Dipendente/DashboardDipendente";
 

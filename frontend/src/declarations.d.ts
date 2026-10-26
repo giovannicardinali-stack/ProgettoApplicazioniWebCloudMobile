@@ -1,0 +1,1 @@
+declare module 'gantt-task-react/dist/index.css';
