@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.dto.DettagliProgettoDTO;
+import com.example.demo.dto.DipendenteDTO;
 import com.example.demo.dto.IscriviDipendenteDTO;
 import com.example.demo.dto.ProgettoDTO;
 import com.example.demo.entity.Progetto;
@@ -9,8 +10,10 @@ import com.example.demo.repo.ProgettoRepository;
 import com.example.demo.repo.TaskRepository;
 import com.example.demo.repo.UserRepository;
 import jakarta.transaction.Transactional;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -45,6 +48,8 @@ public class ProgettoService {
         return progettoRepository.save(progetto);
     }
 
+    @Transactional
+    @CacheEvict(value = "users", allEntries = true)
     public void eliminaProgetto(UUID id, String usernameAdmin){
 
         Progetto progetto = progettoRepository.findById(id).orElse(null);
@@ -62,6 +67,7 @@ public class ProgettoService {
     }
 
     @Transactional
+    @CacheEvict(value = "users", key = "#dto.dipendenteId")
     public Progetto iscriviDipendente(UUID progettoId, IscriviDipendenteDTO dto, String usernameAdmin){
 
         User dipendente = userRepository.findById(dto.getDipendenteId())
@@ -73,28 +79,22 @@ public class ProgettoService {
         System.out.println("Admin loggato: " + usernameAdmin);
         System.out.println("Admin del progetto: " + nuovoProgetto.getAdmin().getUsername());
 
-        // 1. Controllo sicurezza dell'admin
         if(!nuovoProgetto.getAdmin().getUsername().equals(usernameAdmin)){
             throw new IllegalArgumentException("Non sei l'admin di questo progetto");
         }
 
-        // 2. Gestione del cambio progetto se è già assegnato a uno
         if(dipendente.getProgetto() != null){
             Progetto vecchioProgetto = dipendente.getProgetto();
 
-            // Se l'utente è già in QUESTO progetto, non fare nulla (evita duplicati)
             if(vecchioProgetto.getId().equals(progettoId)) {
                 return nuovoProgetto;
             }
 
-            // Rimuoviamo il dipendente dalla lista in memoria del vecchio progetto (Ottima pratica)
             vecchioProgetto.getDipendenti().remove(dipendente);
 
-            // Eliminiamo le vecchie task assegnate a lui
             taskRepository.removeTasksByDipendente(dipendente);
         }
 
-        // 3. Assegnazione al nuovo progetto
         nuovoProgetto.getDipendenti().add(dipendente);
         dipendente.setProgetto(nuovoProgetto);
 
@@ -128,6 +128,27 @@ public class ProgettoService {
         risposta.setAdmin(progetto.getAdmin());
         risposta.setDipendenti(progetto.getDipendenti());
         risposta.setTaskInCorso(progetto.getTaskInCorso());
+        return risposta;
+    }
+
+    @Transactional
+    public List<DipendenteDTO> visualizzaDipendentiProgetto(UUID progettoId, String usernameAdmin){
+
+        Progetto progetto = progettoRepository.findById(progettoId).orElseThrow(() -> new RuntimeException("progetto non trovato"));
+        if(!progetto.getAdmin().getUsername().equals(usernameAdmin)){
+            throw new IllegalArgumentException("non sei l'admin di questo progetto");
+        }
+
+        List<User> dipendenti = progetto.getDipendenti();
+        List<DipendenteDTO> risposta = new ArrayList<>();
+
+        for(User dipendente : dipendenti){
+            DipendenteDTO dto = new DipendenteDTO();
+            dto.setId(dipendente.getId());
+            dto.setUsername(dipendente.getUsername());
+            risposta.add(dto);
+        }
+
         return risposta;
     }
 }

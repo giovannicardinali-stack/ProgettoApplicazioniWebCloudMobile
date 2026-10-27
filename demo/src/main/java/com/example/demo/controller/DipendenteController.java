@@ -35,5 +35,4 @@ public class DipendenteController {
     public ResponseEntity<List<DettagliTaskDTO>> visualizzaTaskDipendenti(@AuthenticationPrincipal UserDetails utente){
         return ResponseEntity.ok(dipendenteService.visualizzaTaskDipendenti(utente.getUsername()));
     }
-
 }

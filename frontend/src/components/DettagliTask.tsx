@@ -65,14 +65,26 @@ const DettagliTask = ({ idTask, onBack }: Props) => {
   const [dipendenteSelezionato, setDipendenteSelezionato] = useState("");
 
   useEffect(() => {
-    // Carica task e lista dipendenti in parallelo
-    Promise.all([
-      api.get(`/api/v1/progetti/tasks/${idTask}`),
-      api.get(`/api/v1/admin/dipendenti`),
-    ])
-      .then(([resTask, resDip]) => {
-        setTask(resTask.data);
-        setDipendenti(resDip.data);
+    // Carica prima la task per ricavare il progettoId
+    api.get(`/api/v1/progetti/tasks/${idTask}`)
+      .then((resTask) => {
+        const taskData = resTask.data;
+        setTask(taskData);
+
+        const progettoId = taskData.progettoId || taskData.progetto_id;
+
+        if (progettoId) {
+          // 2. Chiamiamo il nuovo endpoint filtrato per progetto
+          return api.get(`/api/v1/admin/progetti/${progettoId}/dipendenti`);
+        } else {
+          console.error("Progetto ID non trovato nella task");
+          return null;
+        }
+      })
+      .then((resDip) => {
+        if (resDip) {
+          setDipendenti(resDip.data);
+        }
       })
       .catch((err) => console.error("Errore caricamento dati:", err));
   }, [idTask]);

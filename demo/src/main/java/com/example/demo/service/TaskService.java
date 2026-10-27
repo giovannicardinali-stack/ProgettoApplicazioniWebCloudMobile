@@ -8,6 +8,7 @@ import com.example.demo.repo.ProgettoRepository;
 import com.example.demo.repo.TaskRepository;
 import com.example.demo.repo.UserRepository;
 import jakarta.transaction.Transactional;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 
 import java.nio.file.AccessDeniedException;
@@ -139,13 +140,31 @@ public class TaskService {
         return mapToDto(taskSalvata);
     }
 
+
+    /*
+        @Transactional serve a garantire che una o più operazioni sul database vengano eseguite
+        come un'unica transazione (o vanno a buon fine tutte, oppure viene annullato tutto).
+        Inoltre mantiene la connessione attiva nel database
+     */
     @Transactional
+    @CacheEvict(value = "users", key = "#dipendenteId") //pulisce la cache di Redis
     public void assegnaTask(UUID taskId, UUID dipendenteId) {
         Task task = taskRepository.findById(taskId)
                 .orElseThrow(() -> new RuntimeException("Task non trovata"));
 
         User dipendente = userRepository.findById(dipendenteId)
                 .orElseThrow(() -> new RuntimeException("Dipendente non trovato"));
+
+        Progetto progettoTask = task.getProgetto();
+        Progetto progettoDipendente = dipendente.getProgetto();
+
+        if(progettoTask == null || progettoDipendente == null){
+            throw new IllegalArgumentException("Impossibile accedere a questa task");
+        }
+
+        if(!progettoTask.getId().equals(progettoDipendente.getId())){
+            throw new IllegalArgumentException("L'utente non fa parte di questo progetto");
+        }
 
         task.setDipendente(dipendente);
 

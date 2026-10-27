@@ -1,6 +1,5 @@
 package com.example.demo.dto;
 
-import com.example.demo.entity.Progetto;
 import lombok.Getter;
 import lombok.Setter;
 

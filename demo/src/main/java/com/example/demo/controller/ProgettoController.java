@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.dto.DettagliProgettoDTO;
+import com.example.demo.dto.DipendenteDTO;
 import com.example.demo.dto.IscriviDipendenteDTO;
 import com.example.demo.dto.ProgettoDTO;
 import com.example.demo.service.ProgettoService;
@@ -9,6 +10,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -54,6 +56,10 @@ public class ProgettoController {
         return ResponseEntity.ok(progettoService.visualizzaDettagli(progettoId, admin.getUsername()));
     }
 
-
-
+    //visualizza i dipendenti di un progetto scelto
+    @GetMapping("/{progettoId}/dipendenti")
+    public ResponseEntity<List<DipendenteDTO>> visualizzaDipendentiProgetto(@PathVariable UUID progettoId,
+                                                                            @AuthenticationPrincipal UserDetails admin){
+        return ResponseEntity.ok(progettoService.visualizzaDipendentiProgetto(progettoId, admin.getUsername()));
+    }
 }
