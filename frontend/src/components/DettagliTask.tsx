@@ -71,10 +71,10 @@ const DettagliTask = ({ idTask, onBack }: Props) => {
         const taskData = resTask.data;
         setTask(taskData);
 
-        const progettoId = taskData.progettoId || taskData.progetto_id;
+        const progettoId = taskData.idProgetto;
 
         if (progettoId) {
-          // 2. Chiamiamo il nuovo endpoint filtrato per progetto
+          //Chiama il nuovo endpoint filtrato per progetto
           return api.get(`/api/v1/admin/progetti/${progettoId}/dipendenti`);
         } else {
           console.error("Progetto ID non trovato nella task");

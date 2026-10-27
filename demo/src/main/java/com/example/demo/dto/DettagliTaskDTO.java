@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -18,4 +19,5 @@ public class DettagliTaskDTO {
     private boolean validato;
     private StatoTask statoTask;
     private String nomeDipendente;
+    private UUID idProgetto;
 }

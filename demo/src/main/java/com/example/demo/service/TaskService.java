@@ -109,6 +109,7 @@ public class TaskService {
         dto.setDataFine(task.getDataFine());
         dto.setValidato(task.isValidato());
         dto.setStatoTask(task.getStatoTask());
+        dto.setIdProgetto(task.getProgetto().getId());
 
         if (task.getAdmin() != null) {
             dto.setNomeAdmin(task.getAdmin().getUsername());
